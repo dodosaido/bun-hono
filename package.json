@@ -2,8 +2,7 @@
     "name": "bun-hono",
     "type": "module",
     "scripts": {
-        "start": "bun src/index.ts",
-        "dev": "bun --watch src/index.ts"
+        "dev": "bun run --watch src/index.ts"
     },
     "dependencies": {
         "eta": "^3.5.0",

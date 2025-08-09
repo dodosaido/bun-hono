@@ -13,8 +13,7 @@ const eta = new Eta({
 const app = new Hono();
 
 app.get("/", (c) => {
-    const html = eta.render("index", { test: "Hello Eta" });
-    return c.html(html);
+    return c.text("cok");
 });
 
 export default app;
