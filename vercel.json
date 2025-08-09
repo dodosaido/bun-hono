@@ -6,15 +6,6 @@
             "includeFiles": "views/**"
         }
     },
-    "builds": [
-        {
-            "src": "src/index.ts",
-            "use": "@vercel/bun",
-            "config": {
-                "includeFiles": "views/**"
-            }
-        }
-    ],
     "routes": [
         {
             "src": "/(.*)",
