@@ -1,14 +1,5 @@
 {
     "$schema": "https://openapi.vercel.sh/vercel.json",
-    "builds": [
-        {
-            "src": "src/index.ts",
-            "use": "@vercel/bun",
-            "config": {
-                "includeFiles": "views/**"
-            }
-        }
-    ],
     "routes": [
         {
             "src": "/(.*)",
