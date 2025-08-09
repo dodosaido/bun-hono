@@ -1,0 +1,16 @@
+{
+    "name": "bun-hono",
+    "type": "module",
+    "scripts": {
+        "dev": "bun --watch src/index.ts"
+    },
+    "dependencies": {
+        "eta": "^3.5.0",
+        "hono": "^4.9.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.17",
+        "tsx": "^4.7.1",
+        "typescript": "^5.8.3"
+    }
+}

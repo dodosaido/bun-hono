@@ -1,0 +1,11 @@
+{
+  "overrides": [
+    {
+      "files": "*.eta",
+      "options": {
+        "parser": "html"
+      }
+    }
+  ]
+}
+
