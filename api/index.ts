@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 
-const app = new Hono().basePath("/api");
+const app = new Hono();
 
 app.get("/", (c) => {
     return c.json({ message: "Cok koe!!!" });
