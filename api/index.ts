@@ -3,7 +3,7 @@ import { handle } from "hono/vercel";
 
 const app = new Hono().basePath("/api");
 
-app.get("/", (c) => {
+app.get("/v1", (c) => {
     return c.json({ message: "angel... angel..." });
 });
 
