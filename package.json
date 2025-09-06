@@ -1,15 +1,31 @@
 {
-    "name": "bun-hono",
+    "name": "my-project",
+    "private": true,
+    "version": "0.0.1",
     "type": "module",
     "scripts": {
-        "dev": "bun run --watch api/index.ts"
+        "dev": "vite",
+        "build": "tsc -b && vite build",
+        "lint": "eslint .",
+        "preview": "vite preview",
+        "api:dev": "bun run --hot api/index.ts"
     },
     "dependencies": {
-        "eta": "^3.5.0",
-        "hono": "^4.9.0"
+        "hono": "^4.9.6",
+        "react": "^19.1.1",
+        "react-dom": "^19.1.1"
     },
     "devDependencies": {
-        "@types/node": "^20.11.17",
-        "typescript": "^5.8.3"
+        "@eslint/js": "^9.33.0",
+        "@types/react": "^19.1.10",
+        "@types/react-dom": "^19.1.7",
+        "@vitejs/plugin-react": "^5.0.0",
+        "eslint": "^9.33.0",
+        "eslint-plugin-react-hooks": "^5.2.0",
+        "eslint-plugin-react-refresh": "^0.4.20",
+        "globals": "^16.3.0",
+        "typescript": "~5.8.3",
+        "typescript-eslint": "^8.39.1",
+        "vite": "^7.1.2"
     }
 }

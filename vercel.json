@@ -1,9 +1,10 @@
 {
-    "rewrites": [
-        {
-            "source": "/api/(.*)",
-            "destination": "/api"
-        }
+    "builds": [
+        { "src": "api/index.ts", "use": "@vercel/node" },
+        { "src": "dist/**", "use": "@vercel/static" }
     ],
-    "redirects": [{ "source": "/", "destination": "/api", "permanent": false }]
+    "rewrites": [
+        { "source": "/api/:match*", "destination": "/api/index.ts" },
+        { "source": "/:match*", "destination": "/index.html" }
+    ]
 }
