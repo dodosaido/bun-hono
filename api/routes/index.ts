@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import {
     getAnimeController,
     getAnimeListController,
-} from "../controllers/index";
+} from "../controllers/index.js";
 
 const animeList = new Hono().basePath("/anime-list");
 animeList.get("/", getAnimeListController);
