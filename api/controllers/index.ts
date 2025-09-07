@@ -1,8 +1,8 @@
 import { Context } from "hono";
-import * as model from "../models";
+import { getAnimeListModel } from "../models";
 
 export const getAnimeList = async (c: Context) => {
-    const data = await model.getAnimeList();
+    const data = await getAnimeListModel();
 
     return c.json(data);
 };
