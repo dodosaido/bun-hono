@@ -1,1 +1,15 @@
 @import "tailwindcss";
+@plugin "daisyui" {
+    themes: light --default;
+    exclude: rootscrollgutter, rootcolor;
+}
+
+@layer base {
+    body {
+        @apply min-h-svh bg-linear-to-t from-gray-300 to-gray-100 text-gray-700;
+    }
+
+    .wrapper {
+        @apply max-w-2xl mx-auto;
+    }
+}

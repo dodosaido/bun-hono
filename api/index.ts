@@ -1,11 +1,15 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
+import * as route from "./routes";
 
 const app = new Hono().basePath("/api");
 
 app.get("/", (c) => {
     return c.json({ message: "angel... angel..." });
 });
+
+app.route("/", route.animeList);
+app.route("/", route.getAnime);
 
 // Export default untuk dev (bun run api:dev)
 export default app;
@@ -17,4 +21,3 @@ export const POST = handler;
 export const PATCH = handler;
 export const PUT = handler;
 export const OPTIONS = handler;
-
