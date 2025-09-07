@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import * as controller from "../controllers/";
+import * as controller from "../controllers/index.ts";
 
 const animeList = new Hono().basePath("/anime-list");
 animeList.get("/", controller.getAnimeList);
