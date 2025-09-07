@@ -1,12 +1,12 @@
 import { Context } from "hono";
-import * as model from "../models/index.ts";
+import { getAnimeListModel } from "../models/index.ts";
 
-export const getAnimeList = async (c: Context) => {
-    const data = await model.getAnimeList();
+export const getAnimeListController = async (c: Context) => {
+    const data = await getAnimeListModel();
 
     return c.json(data);
 };
 
-export const getAnime = (c: Context) => {
+export const getAnimeController = (c: Context) => {
     return c.json({ message: "anime detail" });
 };
