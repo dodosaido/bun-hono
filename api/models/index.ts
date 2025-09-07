@@ -37,7 +37,7 @@ const fetchURL = async () => {
  GET ANIME LIST
 ===================
 */
-export async function getAnimeListModel(): Promise<Anime[]> {
+export async function getAnimeList(): Promise<Anime[]> {
     const animelist: Anime[] = [];
 
     const html_raw = await fetchURL();
