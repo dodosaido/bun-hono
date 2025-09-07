@@ -4,6 +4,20 @@ import { animeList, getAnime } from "./routes/index.js";
 
 const app = new Hono().basePath("/api");
 
+app.use("*", async (c, next) => {
+    const key = c.req.header("x-api-key");
+
+    if (key !== "cung!!!") {
+        // return c.json({ error: "Unauthorized" }, 403);
+        if (process.env.VERCEL_ENV === "production") {
+            return c.redirect("/");
+        }
+
+        return c.redirect("http://localhost:5173/");
+    }
+    await next();
+});
+
 app.get("/", (c) => {
     return c.json({ message: "angel... angel..." });
 });
