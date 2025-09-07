@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
-import { animeList, getAnime } from "./routes/index.ts";
+import { animeList, getAnime } from "./routes/index";
 
 const app = new Hono().basePath("/api");
 
