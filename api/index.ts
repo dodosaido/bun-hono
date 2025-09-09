@@ -4,6 +4,16 @@ import { animeList, getAnime } from "./routes/index.js";
 
 const app = new Hono().basePath("/api");
 
+// Middleware cek kalau akses via browser → redirect
+app.use("/*", async (c, next) => {
+    const accept = c.req.header("accept") || "";
+    if (accept.includes("text/html")) {
+        // Redirect ke home page
+        return c.redirect("/", 302);
+    }
+    await next();
+});
+
 app.get("/", (c) => {
     return c.json({ message: "angel... angel..." });
 });

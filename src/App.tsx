@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import type { Anime } from "../api/models";
+import type { Anime } from "../type.d.ts";
 
 // interface Anime {
 //     title: string;
