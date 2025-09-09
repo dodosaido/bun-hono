@@ -1,17 +1,16 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import type { Anime } from "../../type.d.ts";
 
-// /*
-// ===================
-//  MODELS
-// ===================
-// */
-// interface Anime {
-//     title: string;
-//     imgURL: string | null;
-//     slug: string | null;
-// }
+/*
+===================
+ MODELS
+===================
+*/
+export interface Anime {
+    title: string;
+    imgURL: string | null;
+    slug: string | null;
+}
 
 /*
 ===================
