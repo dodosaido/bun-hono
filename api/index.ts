@@ -9,7 +9,7 @@ app.use("/*", async (c, next) => {
     const accept = c.req.header("accept") || "";
     if (accept.includes("text/html")) {
         // Redirect ke home page
-        return c.redirect("/", 302);
+        return c.redirect("/notfound", 302);
     }
     await next();
 });

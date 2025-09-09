@@ -6,7 +6,7 @@
 
 @layer base {
     body {
-        @apply min-h-svh bg-linear-to-t from-gray-300 to-gray-100 text-gray-700;
+        @apply min-h-svh bg-linear-to-t from-gray-300 to-gray-100 text-gray-700 overflow-y-scroll;
     }
 
     .wrapper {

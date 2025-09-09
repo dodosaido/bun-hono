@@ -1,13 +1,13 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import type { Anime } from "../type.d.ts";
+import type { Anime } from "../../type.d.ts";
+import { Hr } from "../components/hr.tsx";
 
-// interface Anime {
-//     title: string;
-//     imgURL: string | null;
-//     slug: string | null;
-// }
+export const Route = createFileRoute("/")({
+    component: Index,
+});
 
-function App() {
+function Index() {
     const { isPending, isError, error, data } = useQuery<Anime[]>({
         queryKey: ["anime-list"],
         queryFn: async () =>
@@ -49,19 +49,25 @@ function App() {
     }
 
     return (
-        <div className="p-4">
+        <>
             {data.map((a) => (
                 <div key={a.slug}>
                     <div className="flex">
-                        <div className="mr-2 text-gray-500 leading-4">
-                            &#8919;
+                        <div className="mr-2 text-gray-500 leading-3">
+                            &#8811;
                         </div>
                         <div className="card md:card-side rounded-none max-w-max">
-                            <a href="#">
+                            <Link
+                                to="/anime/$slug"
+                                params={{
+                                    slug: a.slug?.split("/").at(-1) || "",
+                                }}
+                                state={{ apiSlug: a.slug || "" }}
+                            >
                                 <figure className="max-w-52 h-28 aspect-video">
                                     <img src={a.imgURL!} alt={a.title} />
                                 </figure>
-                            </a>
+                            </Link>
 
                             <div className="card-body p-0 max-md:mt-2 md:ml-4 flex-row items-start">
                                 {a.slug!.includes("a") && (
@@ -78,11 +84,9 @@ function App() {
                             </div>
                         </div>
                     </div>
-                    <hr className="my-4 text-gray-700/20" />
+                    <Hr />
                 </div>
             ))}
-        </div>
+        </>
     );
 }
-
-export default App;
