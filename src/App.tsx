@@ -1,18 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
+import type { Anime } from "../type.d.ts";
 
-interface Anime {
-    title: string;
-    imgURL: string | null;
-    slug: string | null;
-}
+// interface Anime {
+//     title: string;
+//     imgURL: string | null;
+//     slug: string | null;
+// }
 
 function App() {
     const { isPending, isError, error, data } = useQuery<Anime[]>({
         queryKey: ["anime-list"],
         queryFn: async () =>
-            await fetch("/api/anime-list", {
-                headers: { "x-api-key": "cung!!!" },
-            }).then((res) => res.json()),
+            await fetch("/api/anime-list").then((res) => res.json()),
     });
 
     if (isPending) {

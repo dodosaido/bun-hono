@@ -1,3 +1,9 @@
 {
-    "rewrites": [{ "source": "/api/:match*", "destination": "/api/index.ts" }]
+    "rewrites": [{ "source": "/api/:match*", "destination": "/api/index.ts" }],
+    "redirects": [
+        {
+            "source": "/api/:path*",
+            "destination": "/"
+        }
+    ]
 }
