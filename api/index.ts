@@ -22,8 +22,8 @@ app.get("/", (c) => {
 app.route("/", animeList);
 app.route("/", getAnime);
 
-app.use("/*", serveStatic({ root: "/dist" }));
-app.use("/*", serveStatic({ root: "/dist", path: "index.html" }));
+app.use("/*", serveStatic({ root: "/" }));
+app.use("/*", serveStatic({ root: "/", path: "index.html" }));
 
 // Export default untuk dev (bun run api:dev)
 export default app;
