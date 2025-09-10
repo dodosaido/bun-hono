@@ -1,5 +1,8 @@
 {
     "installCommand": "bun install",
     "buildCommand": "bun run build",
-    "rewrites": [{ "source": "/api/:match*", "destination": "/api/index.ts" }]
+    "rewrites": [
+        { "source": "/api/(.*)", "destination": "/api/index.ts" },
+        { "source": "/(.*)", "destination": "/" }
+    ]
 }
