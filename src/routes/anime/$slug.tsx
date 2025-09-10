@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { createFileRoute, useRouterState } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import type { Anime } from "../../../type";
 import { Arrow } from "../../components/arrow";
@@ -18,20 +18,42 @@ export const Route = createFileRoute("/anime/$slug")({
 function AnimePage() {
     // In a component!
     const { slug } = Route.useParams();
-    const { apiSlug } = useRouterState({
-        select: (s) => s.location.state,
-    });
+    const router = useRouter();
 
-    const { data, isLoading } = useQuery<Anime>({
-        queryKey: ["anime", apiSlug],
-        queryFn: async () =>
-            await fetch(`/api/anime?slug=${apiSlug}`).then((res) => res.json()),
-        enabled: !!apiSlug,
+    const { isError, data, isLoading } = useQuery<Anime>({
+        queryKey: ["anime", slug],
+        queryFn: async () => {
+            const res = await fetch(`/api/anime?slug=${slug}`);
+            if (!res.ok) {
+                const body = await res.json();
+                throw new Error(body.error || "Failed to fetch anime");
+            }
+            return res.json();
+        },
+        enabled: !!slug,
     });
+    // redirect kalau error
+    useEffect(() => {
+        if (isError) {
+            router.navigate({ to: "/notfound" });
+        }
+    }, [isError, router]);
 
     useEffect(() => {
-        document.title = slug;
-    }, [slug]);
+        if (isLoading) {
+            document.title = "myanimelist";
+        } else if (data?.title) {
+            document.title = data.title;
+        } else {
+            document.title = "Not found";
+        }
+
+        // 👇 cleanup pas unmount
+        return () => {
+            document.title = "myanimelist"; // default title lo
+        };
+        // document.title = data?.title || "";
+    }, [data, isLoading]);
 
     if (isLoading) return <p className="text-gray-400 italic">Loading...</p>;
 
@@ -53,7 +75,13 @@ function AnimePage() {
                 {data?.download.map((movie) => (
                     <div key={movie.desc} className="flex items-baseline">
                         <Arrow />
-                        <a href={movie.url!} className="link link-hover" target="_blank">{movie.desc}</a>
+                        <a
+                            href={movie.url!}
+                            className="link link-hover"
+                            target="_blank"
+                        >
+                            {movie.desc}
+                        </a>
                     </div>
                 ))}
             </div>

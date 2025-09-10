@@ -59,10 +59,7 @@ function Index() {
                         <div className="card md:card-side rounded-none max-w-max">
                             <Link
                                 to="/anime/$slug"
-                                params={{
-                                    slug: a.slug?.split("/").at(-1) || "",
-                                }}
-                                state={{ apiSlug: a.slug || "" }}
+                                params={{ slug: a.slug || "" }}
                             >
                                 <figure className="max-w-52 h-28 aspect-video">
                                     <img src={a.imgURL!} alt={a.title} />
@@ -78,10 +75,7 @@ function Index() {
                                 )}
                                 <Link
                                     to="/anime/$slug"
-                                    params={{
-                                        slug: a.slug?.split("/").at(-1) || "",
-                                    }}
-                                    state={{ apiSlug: a.slug || "" }}
+                                    params={{ slug: a.slug || "" }}
                                     className="link"
                                 >
                                     <h2 className="card-title text-sm">

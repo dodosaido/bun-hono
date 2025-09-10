@@ -11,5 +11,9 @@ export const getAnimeController = async (c: Context) => {
     const query = c.req.query("slug");
     const data = await getAnimeModel(query);
 
+    if (!data) {
+        return c.json({ error: "error cung!!!" }, 400);
+    }
+
     return c.json(data);
 };

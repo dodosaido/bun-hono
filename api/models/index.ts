@@ -28,6 +28,7 @@ const fetchURL = async ({ anime }: Fetch = {}) => {
 
     if (html_raw.status !== 200) {
         console.log(`gagal scraping, (${html_raw.status})`);
+        throw new Error("gagal scraping");
     }
 
     return html_raw.data;
@@ -93,40 +94,47 @@ export async function getAnimeListModel(): Promise<AnimeList[]> {
  GET ANIME
 ===================
 */
-export async function getAnimeModel(slug: string = ""): Promise<Anime> {
-    const html_raw = await fetchURL({ anime: slug });
-    const $ = cheerio.load(html_raw);
+export async function getAnimeModel(slug: string = ""): Promise<Anime | null> {
+    try {
+        if (!slug) throw new Error("slug tidak ada");
 
-    const title = $("div.pagetitle > h1").text().trim();
-    let imgURL = $("div.unduhan amp-img").attr("src") || null;
-    imgURL = imgURL ? ANOBOY_URL + imgURL : null;
+        const html_raw = await fetchURL({ anime: slug });
+        const $ = cheerio.load(html_raw);
 
-    const download: { url: string | null; desc: string }[] = [];
-    $("div.download a[href*='gofile']").each((_, el) => {
-        const text = $(el).text().trim();
-        const url = $(el).attr("href") || null;
+        const title = $("div.pagetitle > h1").text().trim();
+        let imgURL = $("div.unduhan amp-img").attr("src") || null;
+        imgURL = imgURL ? ANOBOY_URL + imgURL : null;
 
-        if (text.includes("1K") || text.includes("720P")) {
-            download.push({ url, desc: text });
-        }
-    });
+        const download: { url: string | null; desc: string }[] = [];
+        $("div.download a[href*='gofile']").each((_, el) => {
+            const text = $(el).text().trim();
+            const url = $(el).attr("href") || null;
 
-    // WATCH LATER
-    // const saveToWatchLater: { titleToSave: string; urlToSave: string | null } =
-    //     {
-    //         titleToSave: "",
-    //         urlToSave: "",
-    //     };
-    // saveToWatchLater.titleToSave = $("div.breadcrumb a[href*='category']")
-    //     .text()
-    //     .trim();
-    // saveToWatchLater.urlToSave =
-    //     $("div.breadcrumb a[href*='category']")
-    //         .attr("href")
-    //         ?.replace(ANOBOY_URL, "")
-    //         .slice(0, -1) || null;
+            if (text.includes("1K") || text.includes("720P")) {
+                download.push({ url, desc: text });
+            }
+        });
 
-    return { title, imgURL, download } as Anime;
+        // WATCH LATER
+        // const saveToWatchLater: { titleToSave: string; urlToSave: string | null } =
+        //     {
+        //         titleToSave: "",
+        //         urlToSave: "",
+        //     };
+        // saveToWatchLater.titleToSave = $("div.breadcrumb a[href*='category']")
+        //     .text()
+        //     .trim();
+        // saveToWatchLater.urlToSave =
+        //     $("div.breadcrumb a[href*='category']")
+        //         .attr("href")
+        //         ?.replace(ANOBOY_URL, "")
+        //         .slice(0, -1) || null;
+
+        return { title, imgURL, download } as Anime;
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
 }
 //
 // /*
