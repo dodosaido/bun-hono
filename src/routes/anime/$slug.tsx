@@ -35,7 +35,7 @@ function AnimePage() {
     // redirect kalau error
     useEffect(() => {
         if (isError) {
-            router.navigate({ to: "/notfound" });
+            router.navigate({ href: "/notfound" });
         }
     }, [isError, router]);
 
