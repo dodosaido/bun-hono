@@ -1,17 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import type { Anime } from "../../type.d.ts";
+import type { AnimeList } from "../../type.d.ts";
 import { Hr } from "../components/hr.tsx";
+import { Arrow } from "../components/arrow.tsx";
 
 export const Route = createFileRoute("/")({
     component: Index,
 });
 
 function Index() {
-    const { isPending, isError, error, data } = useQuery<Anime[]>({
+    const { isPending, isError, error, data } = useQuery<AnimeList[]>({
         queryKey: ["anime-list"],
         queryFn: async () =>
             await fetch("/api/anime-list").then((res) => res.json()),
+        staleTime: 1000 * 60 * 1, // 1 menit dianggap fresh
     });
 
     if (isPending) {
@@ -53,9 +55,7 @@ function Index() {
             {data.map((a) => (
                 <div key={a.slug}>
                     <div className="flex">
-                        <div className="mr-2 text-gray-500 leading-3">
-                            &#8811;
-                        </div>
+                        <Arrow />
                         <div className="card md:card-side rounded-none max-w-max">
                             <Link
                                 to="/anime/$slug"
@@ -70,17 +70,24 @@ function Index() {
                             </Link>
 
                             <div className="card-body p-0 max-md:mt-2 md:ml-4 flex-row items-start">
-                                {a.slug!.includes("a") && (
+                                {a.slug!.includes("e") && (
                                     <div className="inline-grid *:[grid-area:1/1] mt-[5px]">
                                         <div className="status status-secondary animate-ping"></div>
                                         <div className="status status-secondary"></div>
                                     </div>
                                 )}
-                                <a className="link">
+                                <Link
+                                    to="/anime/$slug"
+                                    params={{
+                                        slug: a.slug?.split("/").at(-1) || "",
+                                    }}
+                                    state={{ apiSlug: a.slug || "" }}
+                                    className="link"
+                                >
                                     <h2 className="card-title text-sm">
                                         {a.title}
                                     </h2>
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>

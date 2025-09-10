@@ -1,17 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import type { Anime } from "../../type.d.ts";
-
-// /*
-// ===================
-//  MODELS
-// ===================
-// */
-// interface Anime {
-//     title: string;
-//     imgURL: string | null;
-//     slug: string | null;
-// }
+import type { AnimeList, Anime } from "../../type.d.ts";
 
 /*
 ===================
@@ -20,8 +9,19 @@ import type { Anime } from "../../type.d.ts";
 */
 export const ANOBOY_URL = "https://ww3.anoboy.app";
 
-const fetchURL = async () => {
-    const html_raw = await axios.get(ANOBOY_URL, {
+interface Fetch {
+    anime?: string;
+    page?: string;
+}
+
+const fetchURL = async ({ anime }: Fetch = {}) => {
+    let fullURL = ANOBOY_URL;
+
+    if (anime) {
+        fullURL += anime;
+    }
+
+    const html_raw = await axios.get(fullURL, {
         responseType: "text",
         validateStatus: () => true,
     });
@@ -38,8 +38,8 @@ const fetchURL = async () => {
  GET ANIME LIST
 ===================
 */
-export async function getAnimeListModel(): Promise<Anime[]> {
-    const animelist: Anime[] = [];
+export async function getAnimeListModel(): Promise<AnimeList[]> {
+    const animelist: AnimeList[] = [];
 
     const html_raw = await fetchURL();
     const $ = cheerio.load(html_raw);
@@ -93,43 +93,41 @@ export async function getAnimeListModel(): Promise<Anime[]> {
  GET ANIME
 ===================
 */
-// export async function anime(path: string = ""): Promise<Anime> {
-//     const html_raw = await fetchURL({ anime: path });
-//     const $ = cheerio.load(html_raw);
-//
-//     const title = $("div.pagetitle > h1").text().trim();
-//     let imgURL = $("div.unduhan amp-img").attr("src") || null;
-//     imgURL = imgURL ? anoboy_URL + imgURL : null;
-//
-//     const download: { url: string | null; desc: string }[] = [];
-//     $("div.download a[href*='gofile']").each((_, el) => {
-//         const text = $(el).text().trim();
-//         const url = $(el).attr("href") || null;
-//
-//         if (text.includes("1K") || text.includes("720P")) {
-//             download.push({ url, desc: text });
-//         }
-//     });
-//
-//     const webp = await convertImagesToWebP(imgURL);
-//
-//     // WATCH LATER
-//     const saveToWatchLater: { titleToSave: string; urlToSave: string | null } =
-//         {
-//             titleToSave: "",
-//             urlToSave: "",
-//         };
-//     saveToWatchLater.titleToSave = $("div.breadcrumb a[href*='category']")
-//         .text()
-//         .trim();
-//     saveToWatchLater.urlToSave =
-//         $("div.breadcrumb a[href*='category']")
-//             .attr("href")
-//             ?.replace(anoboy_URL, "")
-//             .slice(0, -1) || null;
-//
-//     return { title, imgURL, download, webp, eps: saveToWatchLater } as Anime;
-// }
+export async function getAnimeModel(slug: string = ""): Promise<Anime> {
+    const html_raw = await fetchURL({ anime: slug });
+    const $ = cheerio.load(html_raw);
+
+    const title = $("div.pagetitle > h1").text().trim();
+    let imgURL = $("div.unduhan amp-img").attr("src") || null;
+    imgURL = imgURL ? ANOBOY_URL + imgURL : null;
+
+    const download: { url: string | null; desc: string }[] = [];
+    $("div.download a[href*='gofile']").each((_, el) => {
+        const text = $(el).text().trim();
+        const url = $(el).attr("href") || null;
+
+        if (text.includes("1K") || text.includes("720P")) {
+            download.push({ url, desc: text });
+        }
+    });
+
+    // WATCH LATER
+    // const saveToWatchLater: { titleToSave: string; urlToSave: string | null } =
+    //     {
+    //         titleToSave: "",
+    //         urlToSave: "",
+    //     };
+    // saveToWatchLater.titleToSave = $("div.breadcrumb a[href*='category']")
+    //     .text()
+    //     .trim();
+    // saveToWatchLater.urlToSave =
+    //     $("div.breadcrumb a[href*='category']")
+    //         .attr("href")
+    //         ?.replace(ANOBOY_URL, "")
+    //         .slice(0, -1) || null;
+
+    return { title, imgURL, download } as Anime;
+}
 //
 // /*
 // ===================

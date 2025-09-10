@@ -4,11 +4,18 @@ import { Hr } from "../components/hr";
 
 const RootLayout = () => (
     <div className="p-4 max-w-4xl mx-auto">
-        <header className="px-2 py-4 flex gap-2 justify-center">
-            <Link to="/" className="[&.active>span]:text-red-500">
+        <header className="px-2 py-4 flex gap-2 justify-center text-sm font-mono">
+            <Link
+                to="/"
+                className="[&.active>span]:font-bold [&.active]:cursor-default"
+            >
                 [<span>Home</span>]
             </Link>
-            <Link to="/about" className="[&.active>span]:text-red-500">
+            <Link
+                disabled
+                to="/about"
+                className="[&.active>span]:font-bold [&.active]:cursor-default"
+            >
                 [<span>About</span>]
             </Link>
         </header>
