@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import type { AnimeList, Anime } from "../../type.d.ts";
+import type { AnimeList, Anime, Pagelist } from "../../types";
 
 /*
 ===================
@@ -14,11 +14,15 @@ interface Fetch {
     page?: string;
 }
 
-const fetchURL = async ({ anime }: Fetch = {}) => {
+const fetchURL = async ({ anime, page }: Fetch = {}) => {
     let fullURL = ANOBOY_URL;
 
     if (anime) {
         fullURL += anime;
+    }
+
+    if (page) {
+        fullURL += page;
     }
 
     const html_raw = await axios.get(fullURL, {
@@ -34,15 +38,22 @@ const fetchURL = async ({ anime }: Fetch = {}) => {
     return html_raw.data;
 };
 
+function trimSlash(path: string | null) {
+    if (path === "/" || path === null) return path; // khusus root, jangan diubah
+    return path.replace(/\/$/, ""); // hapus slash terakhir
+}
+
 /*
 ===================
  GET ANIME LIST
 ===================
 */
-export async function getAnimeListModel(): Promise<AnimeList[]> {
+export async function getAnimeListModel(
+    page: string = "",
+): Promise<{ data: AnimeList[]; pages: Pagelist[] }> {
     const animelist: AnimeList[] = [];
 
-    const html_raw = await fetchURL();
+    const html_raw = await fetchURL({ page });
     const $ = cheerio.load(html_raw);
 
     const LIST = $("div.home_index > a[rel=bookmark]");
@@ -58,35 +69,36 @@ export async function getAnimeListModel(): Promise<AnimeList[]> {
         animelist.push({ title, imgURL, slug });
     }
 
-    // const pagelist: Pagelist[] = [];
-    // $("div[role=navigation]")
-    //     .children(":not(:first-child)")
-    //     .each((_, el) => {
-    //         const prev_or_next = $(el).attr("rel") || null;
-    //         const home = $(el).attr("class") || null;
-    //         const text = $(el).text().trim();
-    //         let url = $(el).attr("href") || null;
-    //         url = url ? new URL(url).pathname : null;
-    //
-    //         if (home === "first") {
-    //             pagelist.push({ url, desc: "Home" });
-    //             return;
-    //         }
-    //
-    //         if (prev_or_next === "prev") {
-    //             pagelist.push({ url, desc: "Prev" });
-    //             return;
-    //         }
-    //
-    //         if (prev_or_next === "next") {
-    //             pagelist.push({ url, desc: "Next" });
-    //             return;
-    //         }
-    //
-    //         pagelist.push({ url, desc: text });
-    //     });
+    const pagelist: Pagelist[] = [];
+    $("div[role=navigation]")
+        .children(":not(:first-child)")
+        .each((_, el) => {
+            const prev_or_next = $(el).attr("rel") || null;
+            const home = $(el).attr("class") || null;
+            const text = $(el).text().trim();
+            let url = $(el).attr("href") || null;
+            url = url ? new URL(url).pathname : null;
+            url = trimSlash(url);
 
-    return animelist;
+            if (home === "first") {
+                pagelist.push({ url, desc: "Home" });
+                return;
+            }
+
+            if (prev_or_next === "prev") {
+                pagelist.push({ url, desc: "Prev" });
+                return;
+            }
+
+            if (prev_or_next === "next") {
+                pagelist.push({ url, desc: "Next" });
+                return;
+            }
+
+            pagelist.push({ url, desc: text });
+        });
+
+    return { data: animelist, pages: pagelist };
 }
 
 /*

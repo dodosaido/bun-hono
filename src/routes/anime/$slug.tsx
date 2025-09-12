@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import type { Anime } from "../../../type";
-import { Arrow } from "../../components/arrow";
+import type { Anime } from "@types";
+import { Arrow } from "@components/arrow";
 
 export const Route = createFileRoute("/anime/$slug")({
     // In a loader
@@ -71,13 +71,13 @@ function AnimePage() {
                 </figure>
             </div>
 
-            <div className="flex text-sm gap-4">
+            <div className="flex gap-4">
                 {data?.download.map((movie) => (
                     <div key={movie.desc} className="flex items-baseline">
                         <Arrow />
                         <a
                             href={movie.url!}
-                            className="link link-hover"
+                            className="link link-hover text-sm"
                             target="_blank"
                         >
                             {movie.desc}

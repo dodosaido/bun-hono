@@ -2,7 +2,12 @@ import { Context } from "hono";
 import { getAnimeListModel, getAnimeModel } from "../models/index.js";
 
 export const getAnimeListController = async (c: Context) => {
-    const data = await getAnimeListModel();
+    const page = c.req.query("page");
+    const data = await getAnimeListModel(page);
+
+    if (!data) {
+        return c.json({ error: "error cung!!!" }, 400);
+    }
 
     return c.json(data);
 };

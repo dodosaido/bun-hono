@@ -9,3 +9,8 @@ export interface Anime {
     imgURL: string | null;
     download: { url: string | null; desc: string }[];
 }
+
+export interface Pagelist {
+    url: string | null;
+    desc: string;
+}

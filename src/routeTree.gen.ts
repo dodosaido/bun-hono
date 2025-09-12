@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PagePageRouteImport } from './routes/page/$page'
 import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
 
 const AboutRoute = AboutRouteImport.update({
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PagePageRoute = PagePageRouteImport.update({
+  id: '/page/$page',
+  path: '/page/$page',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnimeSlugRoute = AnimeSlugRouteImport.update({
   id: '/anime/$slug',
   path: '/anime/$slug',
@@ -33,30 +39,34 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/anime/$slug': typeof AnimeSlugRoute
+  '/page/$page': typeof PagePageRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/anime/$slug': typeof AnimeSlugRoute
+  '/page/$page': typeof PagePageRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/anime/$slug': typeof AnimeSlugRoute
+  '/page/$page': typeof PagePageRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/anime/$slug'
+  fullPaths: '/' | '/about' | '/anime/$slug' | '/page/$page'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/anime/$slug'
-  id: '__root__' | '/' | '/about' | '/anime/$slug'
+  to: '/' | '/about' | '/anime/$slug' | '/page/$page'
+  id: '__root__' | '/' | '/about' | '/anime/$slug' | '/page/$page'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AnimeSlugRoute: typeof AnimeSlugRoute
+  PagePageRoute: typeof PagePageRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/page/$page': {
+      id: '/page/$page'
+      path: '/page/$page'
+      fullPath: '/page/$page'
+      preLoaderRoute: typeof PagePageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/anime/$slug': {
       id: '/anime/$slug'
       path: '/anime/$slug'
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AnimeSlugRoute: AnimeSlugRoute,
+  PagePageRoute: PagePageRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
