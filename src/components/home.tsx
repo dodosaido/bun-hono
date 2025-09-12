@@ -70,8 +70,12 @@ export function Home({ page }: Props = { page: "" }) {
                                 to="/anime/$slug"
                                 params={{ slug: a.slug || "" }}
                             >
-                                <figure className="max-w-52 h-28 aspect-video">
-                                    <img src={a.imgURL!} alt={a.title} />
+                                <figure className="w-52 aspect-video">
+                                    <img
+                                        className="h-full w-full object-cover"
+                                        src={a.imgURL!}
+                                        alt={a.title}
+                                    />
                                 </figure>
                             </Link>
 

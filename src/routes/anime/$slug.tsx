@@ -66,8 +66,12 @@ function AnimePage() {
 
             <div className="flex">
                 <Arrow />
-                <figure className="max-w-52 h-28 aspect-video">
-                    <img src={data?.imgURL!} alt={data?.title} />
+                <figure className="w-52 aspect-video">
+                    <img
+                        src={data?.imgURL!}
+                        alt={data?.title}
+                        className="h-full w-full object-cover"
+                    />
                 </figure>
             </div>
 

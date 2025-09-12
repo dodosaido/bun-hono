@@ -27,7 +27,7 @@ const RootLayout = () => (
         <Hr />
         <Outlet />
         {/* <TanStackRouterDevtools /> */}
-        <footer className="text-[12px] text-gray-500 text-center pt-10">
+        <footer className="text-[12px] text-gray-400 text-center pt-10">
             <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
         </footer>
     </div>
