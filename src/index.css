@@ -5,13 +5,12 @@
 }
 
 @layer base {
-    html,
-    body {
-        @apply min-h-dvh bg-linear-to-t from-gray-300 to-gray-100;
+    html {
+        @apply max-md:bg-gray-300;
     }
 
     body {
-        @apply text-gray-700 overflow-y-scroll;
+        @apply min-h-dvh bg-linear-to-t from-gray-300 to-gray-100 text-gray-700 overflow-y-scroll;
     }
 
     .wrapper {
