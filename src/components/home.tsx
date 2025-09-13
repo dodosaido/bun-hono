@@ -54,7 +54,7 @@ export function Home({ page }: Props = { page: "" }) {
                         ></path>
                     </g>
                 </svg>
-                Error: {error.message}
+                Oops something wrong!!!
             </div>
         );
     }
