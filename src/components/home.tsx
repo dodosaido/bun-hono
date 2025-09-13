@@ -11,7 +11,7 @@ type Props = {
 export function Home({ page }: Props = { page: "" }) {
     page = page ? `/page/${page}` : "";
 
-    const { isPending, isError, error, data } = useQuery<{
+    const { isPending, isError, data } = useQuery<{
         data: AnimeList[];
         pages: Pagelist[];
     }>({
@@ -23,38 +23,27 @@ export function Home({ page }: Props = { page: "" }) {
         staleTime: 1000 * 60 * 1, // 1 menit dianggap fresh
     });
 
-    console.log(page);
-
     if (isPending) {
         return <h1 className="italic text-gray-500">Nothing to do ...</h1>;
     }
 
     if (isError) {
         return (
-            <div className="badge badge-error rounded-xs">
+            <div role="alert" className="alert alert-error">
                 <svg
-                    className="size-[1em]"
                     xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 shrink-0 stroke-current"
+                    fill="none"
                     viewBox="0 0 24 24"
                 >
-                    <g fill="currentColor">
-                        <rect
-                            x="1.972"
-                            y="11"
-                            width="20.056"
-                            height="2"
-                            transform="translate(-4.971 12) rotate(-45)"
-                            fill="currentColor"
-                            strokeWidth={0}
-                        ></rect>
-                        <path
-                            d="m12,23c-6.065,0-11-4.935-11-11S5.935,1,12,1s11,4.935,11,11-4.935,11-11,11Zm0-20C7.038,3,3,7.037,3,12s4.038,9,9,9,9-4.037,9-9S16.962,3,12,3Z"
-                            strokeWidth={0}
-                            fill="currentColor"
-                        ></path>
-                    </g>
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
                 </svg>
-                Oops something wrong!!!
+                <span>Oops someting wrong!!!</span>
             </div>
         );
     }
