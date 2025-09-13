@@ -9,12 +9,12 @@ const navbars = [
 
 const RootLayout = () => (
     <div className="p-4 max-w-4xl mx-auto flex flex-col *:last:mt-auto min-h-svh">
-        <header className="px-2 py-4 flex gap-2 justify-center text-sm font-mono">
+        <header className="px-2 py-4 flex gap-2 justify-center text-sm font-mono items-baseline">
             {navbars.map((navbar) => (
                 <Link
                     key={navbar.route}
                     activeProps={{
-                        className: "[&>span]:font-bold cursor-default",
+                        className: "font-bold text-black cursor-default",
                     }}
                     to={navbar.route}
                     disabled={navbar.route === "/about"}

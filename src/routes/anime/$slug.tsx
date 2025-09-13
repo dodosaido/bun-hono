@@ -58,10 +58,30 @@ function AnimePage() {
     if (isLoading) return <p className="text-gray-400 italic">Loading...</p>;
 
     return (
-        <div className="*:not-last:mb-4 font-mono">
-            <div className="flex items-baseline">
+        <div className="*:not-last:mb-4">
+            <div className="flex items-baseline font-mono">
                 <Arrow />
                 <h2 className="font-black">[{data?.title}]</h2>
+            </div>
+
+            <div className="flex items-baseline">
+                <Arrow />
+                <div className="">
+                    <span>Download</span>
+                    <div className="*:not-last:mr-4">
+                        {data?.download.map((movie) => (
+                            <a
+                                key={movie.desc}
+                                href={movie.url!}
+                                className="link text-sm font-mono hover:line-through"
+                                target="_blank"
+                            >
+                                <span>Gofile-</span>
+                                {movie.desc}
+                            </a>
+                        ))}
+                    </div>
+                </div>
             </div>
 
             <div className="flex">
@@ -75,20 +95,45 @@ function AnimePage() {
                 </figure>
             </div>
 
-            <div className="flex gap-4">
-                {data?.download.map((movie) => (
-                    <div key={movie.desc} className="flex items-baseline">
-                        <Arrow />
-                        <a
-                            href={movie.url!}
-                            className="link link-hover text-sm"
-                            target="_blank"
-                        >
-                            {movie.desc}
-                        </a>
-                    </div>
-                ))}
+            <div className="flex items-baseline">
+                <Arrow />
+                <div>{data?.desc}</div>
+            </div>
+
+            <div className="overflow-x-auto">
+                <table className="table">
+                    <tbody>
+                        {data?.info.map((i) => (
+                            <tr key={i.th}>
+                                <th>{i.th}</th>
+                                <Td td={i.td} th={i.th} />
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
+}
+
+function Td({ th, td }: { th: string; td: string }) {
+    if (th === "Genre") {
+        const clean = td.replaceAll(",", "");
+        const genres = clean.split(" ");
+
+        return (
+            <td className="flex flex-wrap gap-1 items-center">
+                {genres.map((genre) => (
+                    <div
+                        key={genre}
+                        className="badge badge-xs badge-info text-white"
+                    >
+                        {genre}
+                    </div>
+                ))}
+            </td>
+        );
+    }
+
+    return <td>{td}</td>;
 }

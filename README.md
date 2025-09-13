@@ -1,2 +1,0 @@
-- background mobile view tidak matching
-- min-h tidak pas

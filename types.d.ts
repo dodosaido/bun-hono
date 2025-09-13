@@ -8,6 +8,8 @@ export interface Anime {
     title: string;
     imgURL: string | null;
     download: { url: string | null; desc: string }[];
+    info: { th: string; td: string }[];
+    desc: string;
 }
 
 export interface Pagelist {

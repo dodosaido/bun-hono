@@ -127,12 +127,29 @@ export async function getAnimeModel(slug: string = ""): Promise<Anime | null> {
             }
         });
 
-        // WATCH LATER
-        // const saveToWatchLater: { titleToSave: string; urlToSave: string | null } =
-        //     {
-        //         titleToSave: "",
-        //         urlToSave: "",
-        //     };
+        const desc = $("div.sisi > div.contentdeks").text().trim();
+
+        const info: { th: string; td: string }[] = [];
+        $("div.sisi > div.contenttable tr").each((_, el) => {
+            const th = $(el).find("th").text().trim();
+            const td = $(el).find("td").text().trim();
+
+            if (th === "Semua Episode") {
+                info.push({ th: "Judul", td });
+                return;
+            }
+
+            info.push({ th, td });
+        });
+
+        // // WATCH LATER
+        // const saveToWatchLater: {
+        //     titleToSave: string;
+        //     urlToSave: string | null;
+        // } = {
+        //     titleToSave: "",
+        //     urlToSave: "",
+        // };
         // saveToWatchLater.titleToSave = $("div.breadcrumb a[href*='category']")
         //     .text()
         //     .trim();
@@ -142,7 +159,7 @@ export async function getAnimeModel(slug: string = ""): Promise<Anime | null> {
         //         ?.replace(ANOBOY_URL, "")
         //         .slice(0, -1) || null;
 
-        return { title, imgURL, download } as Anime;
+        return { title, imgURL, download, desc, info } as Anime;
     } catch (e) {
         console.error(e);
         return null;
