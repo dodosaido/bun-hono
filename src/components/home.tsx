@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { AnimeList, Pagelist } from "@types";
 import { Arrow } from "./arrow";
 import { Hr } from "./hr";
+import { Loading } from "./loading";
 
 type Props = {
     page?: string;
@@ -24,7 +25,7 @@ export function Home({ page }: Props = { page: "" }) {
     });
 
     if (isPending) {
-        return <h1 className="italic text-gray-500">Nothing to do ...</h1>;
+        return <Loading />;
     }
 
     if (isError) {

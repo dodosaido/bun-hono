@@ -8,7 +8,7 @@ const navbars = [
 ];
 
 const RootLayout = () => (
-    <div className="p-4 max-w-4xl mx-auto flex flex-col *:last:mt-auto min-h-svh">
+    <div className="p-4 max-w-4xl mx-auto flex flex-col *:last:mt-auto min-h-lvh">
         <header className="px-2 py-4 flex gap-2 justify-center text-sm font-mono items-baseline">
             {navbars.map((navbar) => (
                 <Link

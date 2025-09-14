@@ -3,6 +3,7 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import type { Anime } from "@types";
 import { Arrow } from "@components/arrow";
+import { Loading } from "@components/loading";
 
 export const Route = createFileRoute("/anime/$slug")({
     // In a loader
@@ -55,7 +56,7 @@ function AnimePage() {
         // document.title = data?.title || "";
     }, [data, isLoading]);
 
-    if (isLoading) return <p className="text-gray-400 italic">Loading...</p>;
+    if (isLoading) return <Loading />;
 
     return (
         <div className="*:not-last:mb-4">
@@ -66,8 +67,12 @@ function AnimePage() {
 
             <div className="flex items-baseline">
                 <Arrow />
-                <div className="">
-                    <span>Download</span>
+                <div>
+                    <span>
+                        {data?.download.length === 0
+                            ? "No Link Download"
+                            : "Download"}
+                    </span>
                     <div className="*:not-last:mr-4">
                         {data?.download.map((movie) => (
                             <a
@@ -95,23 +100,27 @@ function AnimePage() {
                 </figure>
             </div>
 
-            <div className="flex items-baseline">
-                <Arrow />
-                <div>{data?.desc}</div>
-            </div>
+            {data?.desc && (
+                <div className="flex items-baseline">
+                    <Arrow />
+                    <div>{data?.desc}</div>
+                </div>
+            )}
 
-            <div className="overflow-x-auto">
-                <table className="table">
-                    <tbody>
-                        {data?.info.map((i) => (
-                            <tr key={i.th}>
-                                <th>{i.th}</th>
-                                <Td td={i.td} th={i.th} />
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+            {data?.info.length !== 0 && (
+                <div className="overflow-x-auto mx-4">
+                    <table className="table">
+                        <tbody>
+                            {data?.info.map((i) => (
+                                <tr key={i.th}>
+                                    <th>{i.th}</th>
+                                    <Td td={i.td} th={i.th} />
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 }
@@ -122,11 +131,11 @@ function Td({ th, td }: { th: string; td: string }) {
         const genres = clean.split(" ");
 
         return (
-            <td className="flex flex-wrap gap-1 items-center">
+            <td className="flex flex-wrap gap-1 items-center pt-3.5">
                 {genres.map((genre) => (
                     <div
                         key={genre}
-                        className="badge badge-xs badge-info text-white"
+                        className="badge badge-xs badge-info text-white leading-0"
                     >
                         {genre}
                     </div>
