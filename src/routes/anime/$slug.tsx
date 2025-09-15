@@ -67,12 +67,12 @@ function AnimePage() {
             <div className="flex items-baseline">
                 <Arrow />
                 <div>
-                    <span>
+                    <div className="mb-2">
                         {data?.download.length === 0
                             ? "No Link Download"
                             : "Download"}
-                    </span>
-                    <div className="*:not-last:mr-4">
+                    </div>
+                    <div className="flex flex-wrap gap-2 items-baseline flex-col">
                         {data?.download.map((movie) => (
                             <a
                                 key={movie.desc}
@@ -93,12 +93,9 @@ function AnimePage() {
                             <span>All episode </span>
                             <span>{data?.bookmark.title}</span>
                         </Link>
-                        <button
-                            title="Add to Bookmark"
-                            onClick={() => console.log("marked")}
-                        >
-                            <div className="badge badge-xs badge-error rounded-xs text-black font-medium pt-0.5 shadow-xs">
-                                 Remove Bookmark
+                        <button title="Add to watchlist">
+                            <div className="badge badge-xs badge-dash badge-neutral rounded-xs font-medium shadow-xs leading-0">
+                                Add to watchlist
                             </div>
                         </button>
                     </div>
