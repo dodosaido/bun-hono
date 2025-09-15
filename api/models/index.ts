@@ -149,9 +149,8 @@ export async function getAnimeModel(slug: string = ""): Promise<Anime | null> {
         bookmark.url =
             $("div.breadcrumb a[href*='category']")
                 .attr("href")
-                ?.split("/")
-                .filter(Boolean)
-                .pop() || null;
+                ?.replace(ANOBOY_URL, "")
+                .slice(0, -1) || null;
 
         return { title, imgURL, download, desc, info, bookmark };
     } catch (e) {

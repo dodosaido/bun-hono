@@ -29,9 +29,6 @@ export const getAnimeController = async (c: Context) => {
 
 export const getCategoryController = async (c: Context) => {
     let query = c.req.query("c");
-    if (!query?.includes("category")) {
-        query = "/category/" + query;
-    }
 
     const data = await getCategory(query);
     if (!data || (!data.desc && !data.title && data.eps.length === 0)) {
