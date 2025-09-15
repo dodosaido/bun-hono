@@ -94,11 +94,11 @@ function AnimePage() {
                             <span>{data?.bookmark.title}</span>
                         </Link>
                         <button
-                            title="Add Bookmark"
-                            onClick={() => alert("bookmarked")}
+                            title="Add to Bookmark"
+                            onClick={() => console.log("marked")}
                         >
-                            <div className="badge badge-xs badge-info rounded-xs text-black font-medium pt-0.5 shadow-xs">
-                                Add bookmark
+                            <div className="badge badge-xs badge-error rounded-xs text-black font-medium pt-0.5 shadow-xs">
+                                 Remove Bookmark
                             </div>
                         </button>
                     </div>
