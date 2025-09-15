@@ -70,27 +70,22 @@ function RouteComponent() {
             </div>
 
             {data?.pages.length !== 0 && (
-                <div className="flex items-baseline">
-                    <Arrow />
-                    <div>
-                        <div className="flex gap-2">
-                            {data?.pages.map((page) => (
-                                <Link
-                                    key={page.title}
-                                    to="/category/$category"
-                                    params={{ category: page.url || "" }}
-                                    className="link link-hover hover:line-through"
-                                    activeProps={{
-                                        className:
-                                            "font-bold text-black cursor-default",
-                                    }}
-                                    disabled={!page.url}
-                                >
-                                    [{page.title}]
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
+                <div className="flex gap-2 flex-wrap">
+                    {data?.pages.map((page) => (
+                        <Link
+                            key={page.title}
+                            to="/category/$category"
+                            params={{ category: page.url || "" }}
+                            className="link link-hover hover:line-through"
+                            activeProps={{
+                                className:
+                                    "font-bold text-black cursor-default",
+                            }}
+                            disabled={!page.url}
+                        >
+                            [{page.title}]
+                        </Link>
+                    ))}
                 </div>
             )}
         </div>

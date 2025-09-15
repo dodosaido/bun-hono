@@ -191,6 +191,11 @@ export async function getCategory(category: string = ""): Promise<Category> {
 
             // const urlConvert = url ? url.replace(/\//g, "_") : null;
 
+            if ($(el).attr("aria-label") === "First Page") {
+                pages.push({ url, title: "first" });
+                return;
+            }
+
             if ($(el).attr("rel") === "prev") {
                 pages.push({ url, title: "prev" });
                 return;
