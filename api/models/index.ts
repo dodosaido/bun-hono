@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import type { AnimeList, Anime, Pagelist } from "../../types.d.ts";
+import type { AnimeList, Anime, Pagelist, Category } from "../../types.d.ts";
 
 /*
 ===================
@@ -10,19 +10,14 @@ import type { AnimeList, Anime, Pagelist } from "../../types.d.ts";
 export const ANOBOY_URL = "https://ww3.anoboy.app";
 
 interface Fetch {
-    anime?: string;
-    page?: string;
+    slug?: string;
 }
 
-const fetchURL = async ({ anime, page }: Fetch = {}) => {
+const fetchURL = async ({ slug }: Fetch = {}) => {
     let fullURL = ANOBOY_URL;
 
-    if (anime) {
-        fullURL += anime;
-    }
-
-    if (page) {
-        fullURL += page;
+    if (slug) {
+        fullURL += slug;
     }
 
     const html_raw = await axios.get(fullURL, {
@@ -38,6 +33,7 @@ const fetchURL = async ({ anime, page }: Fetch = {}) => {
     return html_raw.data;
 };
 
+// hapus / pada route pagination
 function trimSlash(path: string | null) {
     if (path === "/" || path === null) return path; // khusus root, jangan diubah
     return path.replace(/\/$/, ""); // hapus slash terakhir
@@ -53,7 +49,7 @@ export async function getAnimeListModel(
 ): Promise<{ data: AnimeList[]; pages: Pagelist[] }> {
     const animelist: AnimeList[] = [];
 
-    const html_raw = await fetchURL({ page });
+    const html_raw = await fetchURL({ slug: page });
     const $ = cheerio.load(html_raw);
 
     const LIST = $("div.home_index > a[rel=bookmark]");
@@ -110,7 +106,7 @@ export async function getAnimeModel(slug: string = ""): Promise<Anime | null> {
     try {
         if (!slug) throw new Error("slug tidak ada");
 
-        const html_raw = await fetchURL({ anime: slug });
+        const html_raw = await fetchURL({ slug: slug });
         const $ = cheerio.load(html_raw);
 
         const title = $("div.pagetitle > h1").text().trim();
@@ -121,6 +117,8 @@ export async function getAnimeModel(slug: string = ""): Promise<Anime | null> {
         $("div.download a[href*='gofile']").each((_, el) => {
             const text = $(el).text().trim();
             const url = $(el).attr("href") || null;
+
+            if (!url) return;
 
             if (text.includes("1K") || text.includes("720P")) {
                 download.push({ url, desc: text });
@@ -142,50 +140,70 @@ export async function getAnimeModel(slug: string = ""): Promise<Anime | null> {
             info.push({ th, td });
         });
 
-        // // WATCH LATER
-        // const saveToWatchLater: {
-        //     titleToSave: string;
-        //     urlToSave: string | null;
-        // } = {
-        //     titleToSave: "",
-        //     urlToSave: "",
-        // };
-        // saveToWatchLater.titleToSave = $("div.breadcrumb a[href*='category']")
-        //     .text()
-        //     .trim();
-        // saveToWatchLater.urlToSave =
-        //     $("div.breadcrumb a[href*='category']")
-        //         .attr("href")
-        //         ?.replace(ANOBOY_URL, "")
-        //         .slice(0, -1) || null;
+        // for bookmark
+        const bookmark: {
+            title: string;
+            url: string | null;
+        } = { title: "", url: null };
+        bookmark.title = $("div.breadcrumb a[href*='category']").text().trim();
+        bookmark.url =
+            $("div.breadcrumb a[href*='category']")
+                .attr("href")
+                ?.split("/")
+                .filter(Boolean)
+                .pop() || null;
 
-        return { title, imgURL, download, desc, info } as Anime;
+        return { title, imgURL, download, desc, info, bookmark };
     } catch (e) {
         console.error(e);
         return null;
     }
 }
-//
-// /*
-// ===================
-//  CATEGORY
-// ===================
-// */
-// export async function category(path: string = "") {
-//     const html_raw = await fetchURL({ category: path });
-//     const $ = cheerio.load(html_raw);
-//
-//     const title = $("div.pagetitle h1").text().trim();
-//     const desc = $("div.contentdeks").text().trim();
-//
-//     const eps: { title: string; url: string | null }[] = [];
-//     $("div.column-content > a").each((_, el) => {
-//         const title = $(el).find("h3").text().trim();
-//         const url =
-//             $(el).attr("href")?.replace(anoboy_URL, "").slice(0, -1) || null;
-//
-//         eps.push({ title, url });
-//     });
-//
-//     return { title, desc, eps };
-// }
+
+/*
+===================
+ CATEGORY
+===================
+*/
+export async function getCategory(category: string = ""): Promise<Category> {
+    const html_raw = await fetchURL({ slug: category });
+    const $ = cheerio.load(html_raw);
+
+    const title = $("div.pagetitle h1").text().trim();
+    const desc = $("div.contentdeks").text().trim();
+
+    const eps: { title: string; url: string | null }[] = [];
+    $("div.column-content > a").each((_, el) => {
+        const title = $(el).find("h3").text().trim();
+        const url =
+            $(el).attr("href")?.replace(ANOBOY_URL, "").slice(0, -1) || null;
+
+        eps.push({ title, url });
+    });
+
+    const pages: { url: string | null; title: string }[] = [];
+    $("div[role='navigation']")
+        .children(":not(:first-child)")
+        .each((_, el) => {
+            const title = $(el).text().trim();
+            const url =
+                $(el).attr("href")?.replace(ANOBOY_URL, "").slice(0, -1) ||
+                null;
+
+            // const urlConvert = url ? url.replace(/\//g, "_") : null;
+
+            if ($(el).attr("rel") === "prev") {
+                pages.push({ url, title: "prev" });
+                return;
+            }
+
+            if ($(el).attr("rel") === "next") {
+                pages.push({ url, title: "next" });
+                return;
+            }
+
+            pages.push({ url, title });
+        });
+
+    return { title, desc, eps, pages };
+}

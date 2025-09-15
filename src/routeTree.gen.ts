@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PagePageRouteImport } from './routes/page/$page'
+import { Route as CategoryCategoryRouteImport } from './routes/category/$category'
 import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
 
 const AboutRoute = AboutRouteImport.update({
@@ -29,6 +30,11 @@ const PagePageRoute = PagePageRouteImport.update({
   path: '/page/$page',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CategoryCategoryRoute = CategoryCategoryRouteImport.update({
+  id: '/category/$category',
+  path: '/category/$category',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnimeSlugRoute = AnimeSlugRouteImport.update({
   id: '/anime/$slug',
   path: '/anime/$slug',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/anime/$slug': typeof AnimeSlugRoute
+  '/category/$category': typeof CategoryCategoryRoute
   '/page/$page': typeof PagePageRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/anime/$slug': typeof AnimeSlugRoute
+  '/category/$category': typeof CategoryCategoryRoute
   '/page/$page': typeof PagePageRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,33 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/anime/$slug': typeof AnimeSlugRoute
+  '/category/$category': typeof CategoryCategoryRoute
   '/page/$page': typeof PagePageRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/anime/$slug' | '/page/$page'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/anime/$slug'
+    | '/category/$category'
+    | '/page/$page'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/anime/$slug' | '/page/$page'
-  id: '__root__' | '/' | '/about' | '/anime/$slug' | '/page/$page'
+  to: '/' | '/about' | '/anime/$slug' | '/category/$category' | '/page/$page'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/anime/$slug'
+    | '/category/$category'
+    | '/page/$page'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AnimeSlugRoute: typeof AnimeSlugRoute
+  CategoryCategoryRoute: typeof CategoryCategoryRoute
   PagePageRoute: typeof PagePageRoute
 }
 
@@ -92,6 +113,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PagePageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/category/$category': {
+      id: '/category/$category'
+      path: '/category/$category'
+      fullPath: '/category/$category'
+      preLoaderRoute: typeof CategoryCategoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/anime/$slug': {
       id: '/anime/$slug'
       path: '/anime/$slug'
@@ -106,6 +134,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AnimeSlugRoute: AnimeSlugRoute,
+  CategoryCategoryRoute: CategoryCategoryRoute,
   PagePageRoute: PagePageRoute,
 }
 export const routeTree = rootRouteImport

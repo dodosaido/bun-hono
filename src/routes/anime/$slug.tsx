@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import type { Anime } from "@types";
 import { Arrow } from "@components/arrow";
@@ -53,7 +53,6 @@ function AnimePage() {
         return () => {
             document.title = "myanimelist"; // default title lo
         };
-        // document.title = data?.title || "";
     }, [data, isLoading]);
 
     if (isLoading) return <Loading />;
@@ -82,9 +81,26 @@ function AnimePage() {
                                 target="_blank"
                             >
                                 <span>Gofile-</span>
-                                {movie.desc}
+                                <span>{movie.desc}</span>
                             </a>
                         ))}
+
+                        <Link
+                            to="/category/$category"
+                            params={{ category: data?.bookmark.url || "" }}
+                            className="link text-sm font-mono hover:line-through"
+                        >
+                            <span>All episode </span>
+                            <span>{data?.bookmark.title}</span>
+                        </Link>
+                        <button
+                            title="Add Bookmark"
+                            onClick={() => alert("bookmarked")}
+                        >
+                            <div className="badge badge-xs badge-info rounded-xs text-black font-medium pt-0.5 shadow-xs">
+                                Add bookmark
+                            </div>
+                        </button>
                     </div>
                 </div>
             </div>

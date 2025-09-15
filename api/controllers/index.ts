@@ -1,5 +1,9 @@
 import { Context } from "hono";
-import { getAnimeListModel, getAnimeModel } from "../models/index.js";
+import {
+    getCategory,
+    getAnimeListModel,
+    getAnimeModel,
+} from "../models/index.js";
 
 export const getAnimeListController = async (c: Context) => {
     const page = c.req.query("page");
@@ -20,5 +24,18 @@ export const getAnimeController = async (c: Context) => {
         return c.json({ error: "error cung!!!" }, 400);
     }
 
+    return c.json(data);
+};
+
+export const getCategoryController = async (c: Context) => {
+    let query = c.req.query("c");
+    if (!query?.includes("category")) {
+        query = "/category/" + query;
+    }
+
+    const data = await getCategory(query);
+    if (!data || (!data.desc && !data.title && data.eps.length === 0)) {
+        return c.json({ error: "error cung!!!" }, 400);
+    }
     return c.json(data);
 };

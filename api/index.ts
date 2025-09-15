@@ -1,18 +1,20 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
-import { animeList, getAnime } from "./routes/index.js";
+import { getCategory, animeList, getAnime } from "./routes/index.js";
 
 const app = new Hono().basePath("/api");
 
 // Middleware cek kalau akses via browser → redirect
-app.use("/*", async (c, next) => {
-    const accept = c.req.header("accept") || "";
-    if (accept.includes("text/html")) {
-        // Redirect ke home page
-        return c.redirect("/notfound", 302);
-    }
-    await next();
-});
+if (process.env.VERCEL_ENV !== "production") {
+    app.use("/*", async (c, next) => {
+        const accept = c.req.header("accept") || "";
+        if (accept.includes("text/html")) {
+            // Redirect ke home page
+            return c.redirect("/notfound", 302);
+        }
+        await next();
+    });
+}
 
 app.get("/", (c) => {
     return c.json({ message: "angel... angel..." });
@@ -20,6 +22,7 @@ app.get("/", (c) => {
 
 app.route("/", animeList);
 app.route("/", getAnime);
+app.route("/", getCategory);
 
 // Export default untuk dev (bun run api:dev)
 export default app;
