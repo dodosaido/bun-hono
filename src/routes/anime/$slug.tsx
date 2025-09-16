@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import type { Anime } from "@types";
 import { Arrow } from "@components/arrow";
 import { Loading } from "@components/loading";
-import { watchlist } from "../../lib/watchlist";
 
 export const Route = createFileRoute("/anime/$slug")({
     // In a loader
@@ -58,18 +57,6 @@ function AnimePage() {
     }, [data, isLoading]);
 
     const handleSave = () => {
-        const title = data?.bookmark.url;
-        const titleString =
-            title?.split("/").at(-1)?.replace("-subtitle-indonesia", "") || "";
-
-        if (!titleString) return;
-
-        if (watchlist.filterData(titleString)) {
-            watchlist.removeItem(titleString);
-        } else {
-            watchlist.addItem(titleString);
-        }
-
         setIsSave(!isSave);
     };
 
@@ -112,7 +99,7 @@ function AnimePage() {
                             <span>{data?.bookmark.title}</span>
                         </Link>
                         <button title="Add to watchlist" onClick={handleSave}>
-                            <ButtonTitle title={data?.bookmark.url!} />
+                            <ButtonTitle title={isSave} />
                         </button>
                     </div>
                 </div>
@@ -155,12 +142,8 @@ function AnimePage() {
     );
 }
 
-function ButtonTitle({ title }: { title: string }) {
-    const titleString =
-        title?.split("/").at(-1)?.replace("-subtitle-indonesia", "") || "";
-    const isSave = watchlist.filterData(titleString);
-
-    if (isSave) {
+function ButtonTitle({ title }: { title: boolean }) {
+    if (title) {
         return (
             <div className="badge badge-xs badge-dash badge-error rounded-xs font-medium shadow-xs leading-0">
                 Remove from watchlist
