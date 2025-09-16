@@ -160,8 +160,8 @@ function ButtonTitle({ title }: { title: boolean }) {
 
 function Td({ th, td }: { th: string; td: string }) {
     if (th === "Genre") {
-        const clean = td.replaceAll(",", "");
-        const genres = clean.split(" ");
+        const newArr = td.split(",");
+        const genres = newArr.map((s) => s.trim());
 
         return (
             <td className="flex flex-wrap gap-1 items-center pt-3.5">
