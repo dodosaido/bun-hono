@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import type { Anime } from "@types";
 import { Arrow } from "@components/arrow";
 import { Loading } from "@components/loading";
+import { watchlist } from "../../lib/watchlist";
 
 export const Route = createFileRoute("/anime/$slug")({
     // In a loader
@@ -20,6 +21,7 @@ function AnimePage() {
     // In a component!
     const { slug } = Route.useParams();
     const router = useRouter();
+    const [isSave, setIsSave] = useState(false);
 
     const { isError, data, isLoading } = useQuery<Anime>({
         queryKey: ["anime", slug],
@@ -55,10 +57,26 @@ function AnimePage() {
         };
     }, [data, isLoading]);
 
+    const handleSave = () => {
+        const title = data?.bookmark.url;
+        const titleString =
+            title?.split("/").at(-1)?.replace("-subtitle-indonesia", "") || "";
+
+        if (!titleString) return;
+
+        if (watchlist.filterData(titleString)) {
+            watchlist.removeItem(titleString);
+        } else {
+            watchlist.addItem(titleString);
+        }
+
+        setIsSave(!isSave);
+    };
+
     if (isLoading) return <Loading />;
 
     return (
-        <div className="*:not-last:mb-4">
+        <div className="*:not-last:mb-6">
             <div className="flex items-baseline font-mono">
                 <Arrow />
                 <h2 className="font-black">[{data?.title}]</h2>
@@ -67,12 +85,12 @@ function AnimePage() {
             <div className="flex items-baseline">
                 <Arrow />
                 <div>
-                    <div className="mb-2">
+                    <div className="mb-1">
                         {data?.download.length === 0
                             ? "No Link Download"
                             : "Download"}
                     </div>
-                    <div className="flex flex-wrap gap-2 items-baseline flex-col">
+                    <div className="flex flex-wrap gap-1 items-baseline flex-col">
                         {data?.download.map((movie) => (
                             <a
                                 key={movie.desc}
@@ -93,10 +111,8 @@ function AnimePage() {
                             <span>All episode </span>
                             <span>{data?.bookmark.title}</span>
                         </Link>
-                        <button title="Add to watchlist">
-                            <div className="badge badge-xs badge-dash badge-neutral rounded-xs font-medium shadow-xs leading-0">
-                                Add to watchlist
-                            </div>
+                        <button title="Add to watchlist" onClick={handleSave}>
+                            <ButtonTitle title={data?.bookmark.url!} />
                         </button>
                     </div>
                 </div>
@@ -113,27 +129,48 @@ function AnimePage() {
                 </figure>
             </div>
 
-            {data?.desc && (
+            {(data?.desc || data?.info.length !== 0) && (
                 <div className="flex items-baseline">
                     <Arrow />
-                    <div>{data?.desc}</div>
+                    <div>
+                        {data?.desc && <p className="mb-4">{data?.desc}</p>}
+                        {data?.info.length !== 0 && (
+                            <div className="overflow-x-auto">
+                                <table className="table">
+                                    <tbody>
+                                        {data?.info.map((i) => (
+                                            <tr key={i.th}>
+                                                <th>{i.th}</th>
+                                                <Td td={i.td} th={i.th} />
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </div>
                 </div>
             )}
+        </div>
+    );
+}
 
-            {data?.info.length !== 0 && (
-                <div className="overflow-x-auto mx-4">
-                    <table className="table">
-                        <tbody>
-                            {data?.info.map((i) => (
-                                <tr key={i.th}>
-                                    <th>{i.th}</th>
-                                    <Td td={i.td} th={i.th} />
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            )}
+function ButtonTitle({ title }: { title: string }) {
+    const titleString =
+        title?.split("/").at(-1)?.replace("-subtitle-indonesia", "") || "";
+    const isSave = watchlist.filterData(titleString);
+
+    if (isSave) {
+        return (
+            <div className="badge badge-xs badge-dash badge-error rounded-xs font-medium shadow-xs leading-0">
+                Remove from watchlist
+            </div>
+        );
+    }
+
+    return (
+        <div className="badge badge-xs badge-dash badge-neutral rounded-xs font-medium shadow-xs leading-0">
+            Add to watchlist
         </div>
     );
 }

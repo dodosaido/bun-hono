@@ -49,7 +49,7 @@ function RouteComponent() {
     if (isLoading) return <Loading />;
 
     return (
-        <div className="*:not-last:mb-4 font-mono">
+        <div className="*:not-last:mb-6 font-mono">
             <div className="flex items-baseline">
                 <Arrow />
                 <div>
@@ -70,7 +70,7 @@ function RouteComponent() {
             </div>
 
             {data?.pages.length !== 0 && (
-                <div className="flex gap-2 flex-wrap">
+                <div className="flex gap-2 flex-wrap text-sm">
                     {data?.pages.map((page) => (
                         <Link
                             key={page.title}

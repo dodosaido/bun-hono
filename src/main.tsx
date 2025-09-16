@@ -23,6 +23,7 @@ import { routeTree } from "./routeTree.gen";
 const router = createRouter({
     routeTree,
     defaultNotFoundComponent: () => <p>Oops not found</p>,
+    scrollRestoration: true,
 });
 
 // Register the router instance for type safety

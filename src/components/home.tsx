@@ -4,6 +4,7 @@ import type { AnimeList, Pagelist } from "@types";
 import { Arrow } from "./arrow";
 import { Hr } from "./hr";
 import { Loading } from "./loading";
+import { watchlist } from "../lib/watchlist";
 
 type Props = {
     page?: string;
@@ -23,6 +24,12 @@ export function Home({ page }: Props = { page: "" }) {
             ),
         staleTime: 1000 * 60 * 1, // 1 menit dianggap fresh
     });
+
+    const isWatchlist = (title: string) => {
+        const list = watchlist.getData();
+        const result = list.find((anime) => title.includes(anime));
+        return result;
+    };
 
     if (isPending) {
         return <Loading />;
@@ -70,7 +77,8 @@ export function Home({ page }: Props = { page: "" }) {
                             </Link>
 
                             <div className="card-body p-0 max-md:mt-2 md:ml-4 flex-row items-start">
-                                {a.slug!.includes("selesai") && (
+                                {(a.slug!.includes("selesai") ||
+                                    isWatchlist(a.slug!)) && (
                                     <div className="inline-grid *:[grid-area:1/1] mt-[5px]">
                                         <div className="status status-secondary animate-ping"></div>
                                         <div className="status status-secondary"></div>
