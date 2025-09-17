@@ -161,7 +161,7 @@ export async function getAnimeModel(slug: string = ""): Promise<Anime | null> {
 
 /*
 ===================
- CATEGORY
+ CATEGORY / ALL EPS
 ===================
 */
 export async function getCategory(category: string = ""): Promise<Category> {
@@ -176,6 +176,8 @@ export async function getCategory(category: string = ""): Promise<Category> {
         const title = $(el).find("h3").text().trim();
         const url =
             $(el).attr("href")?.replace(ANOBOY_URL, "").slice(0, -1) || null;
+
+        if (title.includes("[Download]")) return;
 
         eps.push({ title, url });
     });

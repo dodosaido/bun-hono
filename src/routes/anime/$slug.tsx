@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import type { Anime } from "@types";
@@ -20,7 +20,6 @@ function AnimePage() {
     // In a component!
     const { slug } = Route.useParams();
     const router = useRouter();
-    const [isSave, setIsSave] = useState(false);
 
     const { isError, data, isLoading } = useQuery<Anime>({
         queryKey: ["anime", slug],
@@ -55,10 +54,6 @@ function AnimePage() {
             document.title = "myanimelist"; // default title lo
         };
     }, [data, isLoading]);
-
-    const handleSave = () => {
-        setIsSave(!isSave);
-    };
 
     if (isLoading) return <Loading />;
 
@@ -98,9 +93,6 @@ function AnimePage() {
                             <span>All episode </span>
                             <span>{data?.bookmark.title}</span>
                         </Link>
-                        <button title="Add to watchlist" onClick={handleSave}>
-                            <ButtonTitle title={isSave} />
-                        </button>
                     </div>
                 </div>
             </div>
@@ -138,22 +130,6 @@ function AnimePage() {
                     </div>
                 </div>
             )}
-        </div>
-    );
-}
-
-function ButtonTitle({ title }: { title: boolean }) {
-    if (title) {
-        return (
-            <div className="badge badge-xs badge-dash badge-error rounded-xs font-medium shadow-xs leading-0">
-                Remove from watchlist
-            </div>
-        );
-    }
-
-    return (
-        <div className="badge badge-xs badge-dash badge-neutral rounded-xs font-medium shadow-xs leading-0">
-            Add to watchlist
         </div>
     );
 }
