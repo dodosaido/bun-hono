@@ -60,7 +60,7 @@ export async function getAnimeListModel(
         const slug =
             $(el).attr("href")?.replace(ANOBOY_URL, "").slice(0, -1) || null;
 
-        if (title.includes("Download")) continue;
+        if (title.includes("Download") || title.includes("Streaming")) continue;
 
         animelist.push({ title, imgURL, slug });
     }
