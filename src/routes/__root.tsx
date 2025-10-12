@@ -4,7 +4,7 @@ import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
 
 const navbars = [
     { route: "/", routeName: "Home" },
-    { route: "/about", routeName: "About" },
+    { route: "/about", routeName: "soon" },
 ];
 
 const RootLayout = () => (

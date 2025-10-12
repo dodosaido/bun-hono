@@ -7,7 +7,7 @@ import type { AnimeList, Anime, Pagelist, Category } from "../../types.d.ts";
  FETCH
 ===================
 */
-export const ANOBOY_URL = "https://ww3.anoboy.app";
+export const ANOBOY_URL = "https://ww1.anoboy.boo";
 
 interface Fetch {
     slug?: string;
@@ -110,7 +110,7 @@ export async function getAnimeModel(slug: string = ""): Promise<Anime | null> {
         const $ = cheerio.load(html_raw);
 
         const title = $("div.pagetitle > h1").text().trim();
-        let imgURL = $("div.unduhan amp-img").attr("src") || null;
+        let imgURL = $("div.deskripsi amp-img").attr("src") || null;
         imgURL = imgURL ? ANOBOY_URL + imgURL : null;
 
         const download: { url: string | null; desc: string }[] = [];
