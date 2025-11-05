@@ -55,7 +55,7 @@ export async function getAnimeListModel(
     const LIST = $("div.home_index > a[rel=bookmark]");
     for (const el of LIST) {
         const title = $(el).find("h3").text().trim();
-        let imgURL = $(el).find("amp-img").attr("src") || null;
+        let imgURL = $(el).find(".amv img").attr("src") || null;
         imgURL = imgURL ? ANOBOY_URL + imgURL : null;
         const slug =
             $(el).attr("href")?.replace(ANOBOY_URL, "").slice(0, -1) || null;
@@ -110,7 +110,7 @@ export async function getAnimeModel(slug: string = ""): Promise<Anime | null> {
         const $ = cheerio.load(html_raw);
 
         const title = $("div.pagetitle > h1").text().trim();
-        let imgURL = $("div.deskripsi amp-img").attr("src") || null;
+        let imgURL = $("div.deskripsi .entry-content img").attr("src") || null;
         imgURL = imgURL ? ANOBOY_URL + imgURL : null;
 
         const download: { url: string | null; desc: string }[] = [];
