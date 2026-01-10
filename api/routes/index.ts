@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import {
-    getAnimeController,
-    getAnimeListController,
-    getCategoryController,
+  getAnimeController,
+  getAnimeListController,
+  getAllEpsController,
 } from "../controllers/index.js";
 
 const animeList = new Hono().basePath("/anime-list");
@@ -11,7 +11,7 @@ animeList.get("/", getAnimeListController);
 const getAnime = new Hono().basePath("/anime");
 getAnime.get("/", getAnimeController);
 
-const getCategory = new Hono().basePath("/category");
-getCategory.get("/", getCategoryController);
+const getAllEps = new Hono().basePath("/eps");
+getAllEps.get("/", getAllEpsController);
 
-export { animeList, getAnime, getCategory };
+export { animeList, getAnime, getAllEps };

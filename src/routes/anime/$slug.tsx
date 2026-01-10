@@ -86,8 +86,8 @@ function AnimePage() {
                         ))}
 
                         <Link
-                            to="/category/$category"
-                            params={{ category: data?.bookmark.url || "" }}
+                            to="/eps/$eps"
+                            params={{ eps: data?.bookmark.url || "" }}
                             className="link text-sm font-mono hover:line-through"
                         >
                             <span>All episode </span>

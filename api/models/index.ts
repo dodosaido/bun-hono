@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import type { AnimeList, Anime, Pagelist, Category } from "../../types.d.ts";
+import type { AnimeList, Anime, Pagelist, Eps } from "../../types.d.ts";
 
 /*
 ===================
@@ -141,16 +141,16 @@ export async function getAnimeModel(slug: string = ""): Promise<Anime | null> {
         });
 
         // for bookmark
+        // lokasi tag di web asli
+        const tagOri = "div.breadcrumb > span > span:nth-child(2) a";
         const bookmark: {
             title: string;
             url: string | null;
         } = { title: "", url: null };
-        bookmark.title = $("div.breadcrumb a[href*='category']").text().trim();
+        bookmark.title = $(tagOri).text().trim();
         bookmark.url =
-            $("div.breadcrumb a[href*='category']")
-                .attr("href")
-                ?.replace(ANOBOY_URL, "")
-                .slice(0, -1) || null;
+            $(tagOri).attr("href")?.replace(ANOBOY_URL, "").slice(0, -1) ||
+            null;
 
         return { title, imgURL, download, desc, info, bookmark };
     } catch (e) {
@@ -161,11 +161,11 @@ export async function getAnimeModel(slug: string = ""): Promise<Anime | null> {
 
 /*
 ===================
- CATEGORY / ALL EPS
+ALL EPS
 ===================
 */
-export async function getCategory(category: string = ""): Promise<Category> {
-    const html_raw = await fetchURL({ slug: category });
+export async function getAllEpisode(ep: string = ""): Promise<Eps> {
+    const html_raw = await fetchURL({ slug: ep });
     const $ = cheerio.load(html_raw);
 
     const title = $("div.pagetitle h1").text().trim();

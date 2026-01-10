@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
-import { getCategory, animeList, getAnime } from "./routes/index.js";
+import { getAllEps, animeList, getAnime } from "./routes/index.js";
 
 const app = new Hono().basePath("/api");
 
@@ -22,7 +22,7 @@ app.get("/", (c) => {
 
 app.route("/", animeList);
 app.route("/", getAnime);
-app.route("/", getCategory);
+app.route("/", getAllEps);
 
 // Export default untuk dev (bun run api:dev)
 export default app;

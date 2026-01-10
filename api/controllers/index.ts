@@ -1,38 +1,38 @@
 import { Context } from "hono";
 import {
-    getCategory,
-    getAnimeListModel,
-    getAnimeModel,
+  getAllEpisode,
+  getAnimeListModel,
+  getAnimeModel,
 } from "../models/index.js";
 
 export const getAnimeListController = async (c: Context) => {
-    const page = c.req.query("page");
-    const data = await getAnimeListModel(page);
+  const page = c.req.query("page");
+  const data = await getAnimeListModel(page);
 
-    if (!data) {
-        return c.json({ error: "error cung!!!" }, 400);
-    }
+  if (!data) {
+    return c.json({ error: "error cung!!!" }, 400);
+  }
 
-    return c.json(data);
+  return c.json(data);
 };
 
 export const getAnimeController = async (c: Context) => {
-    const query = c.req.query("slug");
-    const data = await getAnimeModel(query);
+  const query = c.req.query("slug");
+  const data = await getAnimeModel(query);
 
-    if (!data) {
-        return c.json({ error: "error cung!!!" }, 400);
-    }
+  if (!data) {
+    return c.json({ error: "error cung!!!" }, 400);
+  }
 
-    return c.json(data);
+  return c.json(data);
 };
 
-export const getCategoryController = async (c: Context) => {
-    let query = c.req.query("c");
+export const getAllEpsController = async (c: Context) => {
+  let query = c.req.query("c");
 
-    const data = await getCategory(query);
-    if (!data || (!data.desc && !data.title && data.eps.length === 0)) {
-        return c.json({ error: "error cung!!!" }, 400);
-    }
-    return c.json(data);
+  const data = await getAllEpisode(query);
+  if (!data || (!data.desc && !data.title && data.eps.length === 0)) {
+    return c.json({ error: "error cung!!!" }, 400);
+  }
+  return c.json(data);
 };

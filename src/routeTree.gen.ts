@@ -12,7 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PagePageRouteImport } from './routes/page/$page'
-import { Route as CategoryCategoryRouteImport } from './routes/category/$category'
+import { Route as EpsEpsRouteImport } from './routes/eps/$eps'
 import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
 
 const AboutRoute = AboutRouteImport.update({
@@ -30,9 +30,9 @@ const PagePageRoute = PagePageRouteImport.update({
   path: '/page/$page',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CategoryCategoryRoute = CategoryCategoryRouteImport.update({
-  id: '/category/$category',
-  path: '/category/$category',
+const EpsEpsRoute = EpsEpsRouteImport.update({
+  id: '/eps/$eps',
+  path: '/eps/$eps',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnimeSlugRoute = AnimeSlugRouteImport.update({
@@ -45,14 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/anime/$slug': typeof AnimeSlugRoute
-  '/category/$category': typeof CategoryCategoryRoute
+  '/eps/$eps': typeof EpsEpsRoute
   '/page/$page': typeof PagePageRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/anime/$slug': typeof AnimeSlugRoute
-  '/category/$category': typeof CategoryCategoryRoute
+  '/eps/$eps': typeof EpsEpsRoute
   '/page/$page': typeof PagePageRoute
 }
 export interface FileRoutesById {
@@ -60,33 +60,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/anime/$slug': typeof AnimeSlugRoute
-  '/category/$category': typeof CategoryCategoryRoute
+  '/eps/$eps': typeof EpsEpsRoute
   '/page/$page': typeof PagePageRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/about'
-    | '/anime/$slug'
-    | '/category/$category'
-    | '/page/$page'
+  fullPaths: '/' | '/about' | '/anime/$slug' | '/eps/$eps' | '/page/$page'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/anime/$slug' | '/category/$category' | '/page/$page'
-  id:
-    | '__root__'
-    | '/'
-    | '/about'
-    | '/anime/$slug'
-    | '/category/$category'
-    | '/page/$page'
+  to: '/' | '/about' | '/anime/$slug' | '/eps/$eps' | '/page/$page'
+  id: '__root__' | '/' | '/about' | '/anime/$slug' | '/eps/$eps' | '/page/$page'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AnimeSlugRoute: typeof AnimeSlugRoute
-  CategoryCategoryRoute: typeof CategoryCategoryRoute
+  EpsEpsRoute: typeof EpsEpsRoute
   PagePageRoute: typeof PagePageRoute
 }
 
@@ -113,11 +102,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PagePageRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/category/$category': {
-      id: '/category/$category'
-      path: '/category/$category'
-      fullPath: '/category/$category'
-      preLoaderRoute: typeof CategoryCategoryRouteImport
+    '/eps/$eps': {
+      id: '/eps/$eps'
+      path: '/eps/$eps'
+      fullPath: '/eps/$eps'
+      preLoaderRoute: typeof EpsEpsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/anime/$slug': {
@@ -134,7 +123,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AnimeSlugRoute: AnimeSlugRoute,
-  CategoryCategoryRoute: CategoryCategoryRoute,
+  EpsEpsRoute: EpsEpsRoute,
   PagePageRoute: PagePageRoute,
 }
 export const routeTree = rootRouteImport
