@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Anime } from "@types";
 import { Arrow } from "@components/arrow";
 import { Loading } from "@components/loading";
+import { ButtonFavorite } from "@components/buttonFavorite";
 
 export const Route = createFileRoute("/anime/$slug")({
     // In a loader
@@ -32,6 +33,7 @@ function AnimePage() {
             return res.json();
         },
         enabled: !!slug,
+        refetchOnWindowFocus: false,
     });
     // redirect kalau error
     useEffect(() => {
@@ -72,12 +74,12 @@ function AnimePage() {
                             ? "No Link Download"
                             : "Download"}
                     </div>
-                    <div className="flex flex-wrap gap-1 items-baseline flex-col">
+                    <div className="flex flex-wrap gap-1 items-baseline flex-col *:hover:line-through *:link *:text-sm *:font-mono">
                         {data?.download.map((movie) => (
                             <a
                                 key={movie.desc}
                                 href={movie.url!}
-                                className="link text-sm font-mono hover:line-through"
+                                // className="link text-sm font-mono"
                                 target="_blank"
                             >
                                 <span>Gofile-</span>
@@ -88,7 +90,7 @@ function AnimePage() {
                         <Link
                             to="/eps/$eps"
                             params={{ eps: data?.bookmark.url || "" }}
-                            className="link text-sm font-mono hover:line-through"
+                            // className="link text-sm font-mono"
                         >
                             <span>All episode </span>
                             <span>{data?.bookmark.title}</span>
@@ -96,6 +98,8 @@ function AnimePage() {
                     </div>
                 </div>
             </div>
+
+            {data?.bookmark.url && <ButtonFavorite data={data.bookmark} />}
 
             <div className="flex">
                 <Arrow />

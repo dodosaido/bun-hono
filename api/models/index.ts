@@ -148,9 +148,11 @@ export async function getAnimeModel(slug: string = ""): Promise<Anime | null> {
             url: string | null;
         } = { title: "", url: null };
         bookmark.title = $(tagOri).text().trim();
+        // bookmark.url =
+        //     $(tagOri).attr("href")?.replace(ANOBOY_URL, "").slice(0, -1) ||
+        //     null;
         bookmark.url =
-            $(tagOri).attr("href")?.replace(ANOBOY_URL, "").slice(0, -1) ||
-            null;
+            $(tagOri).attr("href")?.split("/").filter(Boolean).pop() || null;
 
         return { title, imgURL, download, desc, info, bookmark };
     } catch (e) {

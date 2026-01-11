@@ -9,15 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AboutRouteImport } from './routes/about'
+import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PagePageRouteImport } from './routes/page/$page'
 import { Route as EpsEpsRouteImport } from './routes/eps/$eps'
 import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
 
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+const FavoritesRoute = FavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -43,14 +43,14 @@ const AnimeSlugRoute = AnimeSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/favorites': typeof FavoritesRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/eps/$eps': typeof EpsEpsRoute
   '/page/$page': typeof PagePageRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/favorites': typeof FavoritesRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/eps/$eps': typeof EpsEpsRoute
   '/page/$page': typeof PagePageRoute
@@ -58,22 +58,28 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/favorites': typeof FavoritesRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/eps/$eps': typeof EpsEpsRoute
   '/page/$page': typeof PagePageRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/anime/$slug' | '/eps/$eps' | '/page/$page'
+  fullPaths: '/' | '/favorites' | '/anime/$slug' | '/eps/$eps' | '/page/$page'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/anime/$slug' | '/eps/$eps' | '/page/$page'
-  id: '__root__' | '/' | '/about' | '/anime/$slug' | '/eps/$eps' | '/page/$page'
+  to: '/' | '/favorites' | '/anime/$slug' | '/eps/$eps' | '/page/$page'
+  id:
+    | '__root__'
+    | '/'
+    | '/favorites'
+    | '/anime/$slug'
+    | '/eps/$eps'
+    | '/page/$page'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  FavoritesRoute: typeof FavoritesRoute
   AnimeSlugRoute: typeof AnimeSlugRoute
   EpsEpsRoute: typeof EpsEpsRoute
   PagePageRoute: typeof PagePageRoute
@@ -81,11 +87,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/favorites': {
+      id: '/favorites'
+      path: '/favorites'
+      fullPath: '/favorites'
+      preLoaderRoute: typeof FavoritesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -121,7 +127,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  FavoritesRoute: FavoritesRoute,
   AnimeSlugRoute: AnimeSlugRoute,
   EpsEpsRoute: EpsEpsRoute,
   PagePageRoute: PagePageRoute,
