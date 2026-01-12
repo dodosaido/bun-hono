@@ -1,6 +1,6 @@
 import { useFavoriteAnimeStore } from "../stores/favoriteAnimeStore";
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/favorites")({
     component: About,
@@ -20,7 +20,9 @@ function About() {
                         <span className="tracking-[-4px] text-gray-400">
                             {">>"}
                         </span>{" "}
-                        <a href={`/eps/${a.url}`}>{a.title}</a>
+                        <Link to="/eps/$eps" params={{ eps: a.url }}>
+                            {a.title}
+                        </Link>
                     </li>
                 ))}
             </ul>
