@@ -4,6 +4,7 @@ import type { AnimeList, Pagelist } from "@types";
 import { Arrow } from "./arrow";
 import { Hr } from "./hr";
 import { Loading } from "./loading";
+import { BorderFavorite } from "./borderFavorite";
 
 type Props = {
     page?: string;
@@ -55,7 +56,7 @@ export function Home({ page }: Props = { page: "" }) {
                 <div key={a.slug}>
                     <div className="flex">
                         <Arrow />
-                        <div className="card md:card-side rounded-none max-w-max">
+                        <div className="card md:card-side rounded-none max-w-max relative">
                             <Link
                                 to="/anime/$slug"
                                 params={{ slug: a.slug || "" }}
@@ -68,6 +69,8 @@ export function Home({ page }: Props = { page: "" }) {
                                     />
                                 </figure>
                             </Link>
+
+                            <BorderFavorite slug={a.slug} />
 
                             <div className="card-body p-0 max-md:mt-2 md:ml-4 flex-row items-start">
                                 {a.slug!.includes("selesai") && (
