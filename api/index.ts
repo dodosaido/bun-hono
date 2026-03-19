@@ -8,7 +8,8 @@ const app = new Hono().basePath("/api");
 // Middleware cek kalau akses via browser → redirect
 // Vercel env: process.env.VERCEL_ENV
 // Cloudflare env: process.env.CF_PAGES_ENV
-const isProduction = process.env.VERCEL_ENV === "production" || process.env.CF_PAGES_ENV === "production";
+// const isProduction = process.env.VERCEL_ENV === "production" || process.env.CF_PAGES_ENV === "production";
+const isProduction = false;
 
 if (!isProduction) {
     app.use("/*", async (c, next) => {
