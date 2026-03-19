@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
-import { getAllEps, animeList, getAnime } from "./routes/index.js";
+import { getAllEps, getAnimeList, getAnime } from "./routes/index.js";
 
 const app = new Hono().basePath("/api");
 
@@ -20,7 +20,7 @@ app.get("/", (c) => {
     return c.json({ message: "angel... angel..." });
 });
 
-app.route("/", animeList);
+app.route("/", getAnimeList);
 app.route("/", getAnime);
 app.route("/", getAllEps);
 

@@ -10,7 +10,7 @@ type Props = {
     page?: string;
 };
 
-export function Home({ page }: Props = { page: "" }) {
+export function Home({ page = "" }: Props) {
     page = page ? `/page/${page}` : "";
 
     const { isPending, isError, data } = useQuery<{
@@ -18,10 +18,12 @@ export function Home({ page }: Props = { page: "" }) {
         pages: Pagelist[];
     }>({
         queryKey: ["anime-list", page],
-        queryFn: async () =>
-            await fetch(`/api/anime-list?page=${page}`).then((res) =>
-                res.json(),
-            ),
+        queryFn: async () => {
+            const res = await fetch(`/api/anime-list?page=${page}`);
+            if (!res.ok) throw new Error('Failed to fetch');
+            const data = await res.json();
+            return data as { data: AnimeList[]; pages: Pagelist[] };
+        },
         staleTime: 1000 * 60 * 1, // 1 menit dianggap fresh
     });
 
@@ -45,7 +47,7 @@ export function Home({ page }: Props = { page: "" }) {
                         d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                 </svg>
-                <span>Oops someting wrong!!!</span>
+                <span>Oops, something went wrong!</span>
             </div>
         );
     }
@@ -64,7 +66,7 @@ export function Home({ page }: Props = { page: "" }) {
                                 <figure className="w-52 aspect-video">
                                     <img
                                         className="h-full w-full object-cover"
-                                        src={a.imgURL!}
+                                        src={a.imgURL ?? ""}
                                         alt={a.title}
                                     />
                                 </figure>
