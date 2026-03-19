@@ -1,11 +1,16 @@
 import { Hono } from "hono";
-import { handle } from "hono/vercel";
+// import { handle } from "hono/vercel"; // Commented for Vercel
+import { handle } from "hono/cloudflare-pages"; // For Cloudflare Pages
 import { getAllEps, getAnimeList, getAnime } from "./routes/index.js";
 
 const app = new Hono().basePath("/api");
 
 // Middleware cek kalau akses via browser → redirect
-if (process.env.VERCEL_ENV !== "production") {
+// Vercel env: process.env.VERCEL_ENV
+// Cloudflare env: process.env.CF_PAGES_ENV
+const isProduction = process.env.VERCEL_ENV === "production" || process.env.CF_PAGES_ENV === "production";
+
+if (!isProduction) {
     app.use("/*", async (c, next) => {
         const accept = c.req.header("accept") || "";
         if (accept.includes("text/html")) {
@@ -27,10 +32,17 @@ app.route("/", getAllEps);
 // Export default untuk dev (bun run api:dev)
 export default app;
 
-// Export handler untuk Vercel
-const handler = handle(app);
-export const GET = handler;
-export const POST = handler;
-export const PATCH = handler;
-export const PUT = handler;
-export const OPTIONS = handler;
+// Export handler untuk Vercel (commented)
+// const handler = handle(app);
+// export const GET = handler;
+// export const POST = handler;
+// export const PATCH = handler;
+// export const PUT = handler;
+// export const OPTIONS = handler;
+
+// Export handler untuk Cloudflare Pages
+export const GET = handle(app);
+export const POST = handle(app);
+export const PATCH = handle(app);
+export const PUT = handle(app);
+export const OPTIONS = handle(app);
