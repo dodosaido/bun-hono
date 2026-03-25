@@ -1,7 +1,7 @@
 import { Loading } from "@components/loading";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect } from "react";
 import type { Eps } from "@types";
 import { Arrow } from "@components/arrow";
 import { Hr } from "@components/hr";
@@ -39,22 +39,14 @@ function RouteComponent() {
         }
     }, [isError, router]);
 
-    useLayoutEffect(() => {
-        const prevTitle = document.title;
+    useEffect(() => {
         document.title = data?.title ?? "myanimelist";
+
+        // 👇 cleanup pas unmount
         return () => {
-            document.title = prevTitle;
+            document.title = "myanimelist"; // default title lo
         };
     }, [data]);
-
-    // useEffect(() => {
-    //     document.title = data?.title!;
-    //
-    //     // 👇 cleanup pas unmount
-    //     return () => {
-    //         document.title = "myanimelist"; // default title lo
-    //     };
-    // }, [data]);
 
     if (isLoading) return <Loading />;
 
