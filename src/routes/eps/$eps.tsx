@@ -1,9 +1,10 @@
 import { Loading } from "@components/loading";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import type { Eps } from "@types";
 import { Arrow } from "@components/arrow";
+import { Hr } from "@components/hr";
 
 export const Route = createFileRoute("/eps/$eps")({
     loader: ({ params }) => {
@@ -38,14 +39,22 @@ function RouteComponent() {
         }
     }, [isError, router]);
 
-    useEffect(() => {
-        document.title = eps;
-
-        // 👇 cleanup pas unmount
+    useLayoutEffect(() => {
+        const prevTitle = document.title;
+        document.title = data?.title ?? "myanimelist";
         return () => {
-            document.title = "myanimelist"; // default title lo
+            document.title = prevTitle;
         };
-    }, [eps]);
+    }, [data]);
+
+    // useEffect(() => {
+    //     document.title = data?.title!;
+    //
+    //     // 👇 cleanup pas unmount
+    //     return () => {
+    //         document.title = "myanimelist"; // default title lo
+    //     };
+    // }, [data]);
 
     if (isLoading) return <Loading />;
 
@@ -58,7 +67,7 @@ function RouteComponent() {
                     <div className="flex flex-col gap-1">
                         {data?.eps.map((ep) => (
                             <Link
-                                key={ep.title}
+                                key={ep.url}
                                 className="link max-w-max hover:line-through"
                                 to="/anime/$slug"
                                 params={{ slug: ep.url || "" }}
@@ -89,6 +98,8 @@ function RouteComponent() {
                     ))}
                 </div>
             )}
+
+            <Hr />
         </div>
     );
 }

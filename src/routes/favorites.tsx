@@ -1,3 +1,4 @@
+import { Hr } from "@components/hr";
 import { useFavoriteAnimeStore } from "../stores/favoriteAnimeStore";
 
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -33,6 +34,8 @@ function About() {
             >
                 Remove All Favorites
             </button>
+
+            <Hr />
         </div>
     );
 }

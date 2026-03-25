@@ -5,6 +5,7 @@ import type { Anime } from "@types";
 import { Arrow } from "@components/arrow";
 import { Loading } from "@components/loading";
 import { ButtonFavorite } from "@components/buttonFavorite";
+import { Hr } from "@components/hr";
 
 export const Route = createFileRoute("/anime/$slug")({
     // In a loader
@@ -134,6 +135,8 @@ function AnimePage() {
                     </div>
                 </div>
             )}
+
+            <Hr />
         </div>
     );
 }

@@ -20,7 +20,7 @@ export function Home({ page = "" }: Props) {
         queryKey: ["anime-list", page],
         queryFn: async () => {
             const res = await fetch(`/api/anime-list?page=${page}`);
-            if (!res.ok) throw new Error('Failed to fetch');
+            if (!res.ok) throw new Error("Failed to fetch");
             const data = await res.json();
             return data as { data: AnimeList[]; pages: Pagelist[] };
         },
@@ -76,7 +76,7 @@ export function Home({ page = "" }: Props) {
 
                             <div className="card-body p-0 max-md:mt-2 md:ml-4 flex-row items-start">
                                 {a.slug!.includes("selesai") && (
-                                    <div className="inline-grid *:[grid-area:1/1] mt-[5px]">
+                                    <div className="inline-grid *:[grid-area:1/1] mt-1.25">
                                         <div className="status status-secondary animate-ping"></div>
                                         <div className="status status-secondary"></div>
                                     </div>
@@ -97,7 +97,7 @@ export function Home({ page = "" }: Props) {
                 </div>
             ))}
             <div className="text-center">
-                <ul className="join gap-2">
+                <ul className="join gap-2 mb-6">
                     {data.pages.map((page) => (
                         <li
                             key={page.desc}
@@ -116,6 +116,7 @@ export function Home({ page = "" }: Props) {
                         </li>
                     ))}
                 </ul>
+                <Hr />
             </div>
         </>
     );
