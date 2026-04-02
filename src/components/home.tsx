@@ -96,28 +96,31 @@ export function Home({ page = "" }: Props) {
                     <Hr />
                 </div>
             ))}
-            <div className="text-center">
-                <ul className="join gap-2 mb-6">
-                    {data.pages.map((page) => (
-                        <li
-                            key={page.desc}
-                            className="text-sm font-mono join-item"
-                        >
-                            <Link
-                                to={page.url ? page.url : ""}
-                                activeProps={{
-                                    className:
-                                        "[&>span]:font-black [&>span]:text-gray-400 text-red-400 cursor-default",
-                                }}
-                                className="hover:*:[span]:text-red-400"
+
+            {data.data.length > 0 && (
+                <div className="text-center">
+                    <ul className="join gap-2 mb-6">
+                        {data.pages.map((page) => (
+                            <li
+                                key={page.desc}
+                                className="text-sm font-mono join-item"
                             >
-                                [<span>{page.desc}</span>]
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-                <Hr />
-            </div>
+                                <Link
+                                    to={page.url ? page.url : ""}
+                                    activeProps={{
+                                        className:
+                                            "[&>span]:font-black [&>span]:text-gray-400 text-red-400 cursor-default",
+                                    }}
+                                    className="hover:*:[span]:text-red-400"
+                                >
+                                    [<span>{page.desc}</span>]
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                    <Hr />
+                </div>
+            )}
         </>
     );
 }
