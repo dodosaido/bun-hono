@@ -55,13 +55,14 @@ export function Home({ page = "" }: Props) {
     return (
         <>
             {data.data.map((a) => (
-                <div key={a.slug}>
+                <div key={a.slug + a.title}>
                     <div className="flex">
                         <Arrow />
                         <div className="card md:card-side rounded-none max-w-max relative">
                             <Link
                                 to="/anime/$slug"
                                 params={{ slug: a.slug || "" }}
+                                disabled={!a.slug}
                             >
                                 <figure className="w-52 aspect-video">
                                     <img
@@ -84,7 +85,8 @@ export function Home({ page = "" }: Props) {
                                 <Link
                                     to="/anime/$slug"
                                     params={{ slug: a.slug || "" }}
-                                    className="link"
+                                    className="link aria-disabled:cursor-default"
+                                    disabled={!a.slug}
                                 >
                                     <h2 className="card-title text-sm">
                                         {a.title}
@@ -97,30 +99,28 @@ export function Home({ page = "" }: Props) {
                 </div>
             ))}
 
-            {data.data.length > 0 && (
-                <div className="text-center">
-                    <ul className="join gap-2 mb-6">
-                        {data.pages.map((page) => (
-                            <li
-                                key={page.desc}
-                                className="text-sm font-mono join-item"
+            <div className="text-center">
+                <ul className="join gap-2 mb-6">
+                    {data.pages.map((page) => (
+                        <li
+                            key={page.desc}
+                            className="text-sm font-mono join-item"
+                        >
+                            <Link
+                                to={page.url ? page.url : ""}
+                                activeProps={{
+                                    className:
+                                        "[&>span]:font-black [&>span]:text-gray-400 text-red-400 cursor-default",
+                                }}
+                                className="hover:*:[span]:text-red-400"
                             >
-                                <Link
-                                    to={page.url ? page.url : ""}
-                                    activeProps={{
-                                        className:
-                                            "[&>span]:font-black [&>span]:text-gray-400 text-red-400 cursor-default",
-                                    }}
-                                    className="hover:*:[span]:text-red-400"
-                                >
-                                    [<span>{page.desc}</span>]
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                    <Hr />
-                </div>
-            )}
+                                [<span>{page.desc}</span>]
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+                <Hr />
+            </div>
         </>
     );
 }

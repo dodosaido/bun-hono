@@ -60,9 +60,12 @@ export async function getAnimeListModel(
         const slug =
             $(el).attr("href")?.replace(ANOBOY_URL, "").slice(0, -1) || null;
 
-        if (!title.includes("Episode")) continue;
-
-        animelist.push({ title, imgURL, slug });
+        // if (!title.includes("Episode")) continue;
+        if (!title.includes("Episode")) {
+            animelist.push({ title, imgURL, slug: "" });
+        } else {
+            animelist.push({ title, imgURL, slug });
+        }
     }
 
     const pagelist: Pagelist[] = [];
