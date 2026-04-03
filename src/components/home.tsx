@@ -63,6 +63,7 @@ export function Home({ page = "" }: Props) {
                                 to="/anime/$slug"
                                 params={{ slug: a.slug || "" }}
                                 disabled={!a.slug}
+                                className="aria-disabled:opacity-30"
                             >
                                 <figure className="w-52 aspect-video">
                                     <img
@@ -73,7 +74,7 @@ export function Home({ page = "" }: Props) {
                                 </figure>
                             </Link>
 
-                            <BorderFavorite slug={a.slug} />
+                            {a.slug && <BorderFavorite slug={a.slug} />}
 
                             <div className="card-body p-0 max-md:mt-2 md:ml-4 flex-row items-start">
                                 {a.slug!.includes("selesai") && (
@@ -85,7 +86,7 @@ export function Home({ page = "" }: Props) {
                                 <Link
                                     to="/anime/$slug"
                                     params={{ slug: a.slug || "" }}
-                                    className="link aria-disabled:cursor-default"
+                                    className="link aria-disabled:cursor-default aria-disabled:opacity-30"
                                     disabled={!a.slug}
                                 >
                                     <h2 className="card-title text-sm">
