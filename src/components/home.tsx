@@ -58,7 +58,7 @@ export function Home({ page = "" }: Props) {
                 <div key={a.slug + a.title}>
                     <div className="flex">
                         <Arrow />
-                        <div className="card md:card-side rounded-none max-w-max relative">
+                        <div className="card md:card-side rounded-none max-w-max">
                             <Link
                                 to="/anime/$slug"
                                 params={{ slug: a.slug || "" }}
@@ -74,15 +74,14 @@ export function Home({ page = "" }: Props) {
                                 </figure>
                             </Link>
 
-                            {a.slug && <BorderFavorite slug={a.slug} />}
-
-                            <div className="card-body p-0 max-md:mt-2 md:ml-4 flex-row items-start">
+                            <div className="card-body p-0 max-md:mt-2 md:ml-4 flex-row place-items-start">
                                 {a.slug!.includes("selesai") && (
                                     <div className="inline-grid *:[grid-area:1/1] mt-1.25">
                                         <div className="status status-secondary animate-ping"></div>
                                         <div className="status status-secondary"></div>
                                     </div>
                                 )}
+                                {a.slug && <BorderFavorite slug={a.slug} />}
                                 <Link
                                     to="/anime/$slug"
                                     params={{ slug: a.slug || "" }}

@@ -1,4 +1,5 @@
 import { useFavoriteAnimeStore } from "../stores/favoriteAnimeStore";
+import iconFavorite from "../assets/favorite_icon.png";
 
 export function BorderFavorite({ slug }: { slug: string | null }) {
     const allFavorite = useFavoriteAnimeStore((s) => s.favorites);
@@ -21,6 +22,8 @@ export function BorderFavorite({ slug }: { slug: string | null }) {
     if (!isFav) return null;
 
     return (
-        <span className="bg-rose-400 absolute bottom-0 left-0 w-52 h-0.5"></span>
+        <div className="w-4 h-4">
+            <img src={iconFavorite} alt="favorite icon" />
+        </div>
     );
 }
