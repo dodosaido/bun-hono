@@ -3,11 +3,17 @@ import { useFavoriteAnimeStore } from "../stores/favoriteAnimeStore";
 export function BorderFavorite({ slug }: { slug: string | null }) {
     const allFavorite = useFavoriteAnimeStore((s) => s.favorites);
     const isFav = allFavorite.some((fav) => {
-        const fixSlug = slug
+        const slugWithEps = slug
             ? slug
                   ?.replace(/^\/\d{4}\/\d{2}\//, "")
                   .replace(/-episode-\d+.*$/i, "")
             : null;
+        const slugWithSeason = slug
+            ? slug
+                  ?.replace(/^\/\d{4}\/\d{2}\//, "")
+                  .replace(/-season-\d+.*$/i, "")
+            : null;
+        const fixSlug = slug?.includes("season") ? slugWithSeason : slugWithEps;
 
         return fav.url.includes(fixSlug!);
     });
